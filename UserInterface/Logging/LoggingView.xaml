@@ -1,0 +1,124 @@
+﻿<controls:MetroWindow
+	x:Class="Yaver.Host.Wpf.UserInterface.Logging.LoggingView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:cal="http://www.caliburnproject.org"
+	xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:nLog="clr-namespace:NLog;assembly=NLog"
+	xmlns:controlExtensions="clr-namespace:Yaver.Host.Wpf.ControlExtensions"
+	xmlns:logging="clr-namespace:Yaver.Host.Wpf.UserInterface.Logging"
+	mc:Ignorable="d"
+	d:DataContext="{d:DesignInstance logging:LoggingViewModel}"
+	Title="Logs"
+	Width="1400"
+	Height="800"
+	GlowBrush="{StaticResource WindowTitleColorBrush}"
+	TitleCharacterCasing="Normal">
+
+	<Grid controlExtensions:GridExtensions.RowDefinitions="Auto,*">
+		<Grid
+			Grid.Row="0"
+			Background="{StaticResource MaterialDesignPaper}">
+
+			<ComboBox
+				Margin="16,0,0,0"
+				HorizontalAlignment="Left"
+				materialDesign:HintAssist.Hint="Minimum Level"
+				materialDesign:ComboBoxAssist.ShowSelectedItem="True"
+				IsReadOnly="True"
+				ItemsSource="{Binding LogLevels}"
+				SelectedItem="{Binding MinimumLogLevel, Mode=TwoWay}">
+			</ComboBox>
+
+			<Button
+				HorizontalAlignment="Right"
+				Margin="0,0,8,0"
+				cal:Message.Attach="Clear"
+				Content="{materialDesign:PackIcon Delete}"
+				Style="{StaticResource MaterialDesignToolButton}" />
+		</Grid>
+
+		<DataGrid
+			Grid.Row="1"
+			AutoGenerateColumns="False"
+			IsReadOnly="True"
+			ItemsSource="{Binding Logs}">
+
+			<DataGrid.Columns>
+				<DataGridTextColumn
+					Width="Auto"
+					Binding="{Binding Date}"
+					Header="Date" />
+
+				<DataGridTextColumn
+					Width="Auto"
+					Binding="{Binding Level}"
+					Header="Level" />
+
+				<DataGridTextColumn
+					Width="200"
+					Binding="{Binding Source}"
+					Header="Source">
+
+					<DataGridTextColumn.ElementStyle>
+						<Style>
+							<Setter Property="TextBlock.TextTrimming" Value="CharacterEllipsis" />
+						</Style>
+					</DataGridTextColumn.ElementStyle>
+				</DataGridTextColumn>
+
+				<DataGridTextColumn
+					Width="*"
+					Binding="{Binding Message}"
+					Header="Message">
+
+					<DataGridTextColumn.ElementStyle>
+						<Style>
+							<Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+						</Style>
+					</DataGridTextColumn.ElementStyle>
+				</DataGridTextColumn>
+			</DataGrid.Columns>
+
+			<DataGrid.RowStyle>
+				<Style
+					BasedOn="{StaticResource {x:Type DataGridRow}}"
+					TargetType="DataGridRow">
+
+					<Style.Triggers>
+						<DataTrigger
+							Binding="{Binding Level}"
+							Value="{x:Static nLog:LogLevel.Error}">
+
+							<Setter Property="Foreground" Value="Red" />
+						</DataTrigger>
+
+						<DataTrigger
+							Binding="{Binding Level}"
+							Value="{x:Static nLog:LogLevel.Warn}">
+
+							<Setter Property="Foreground" Value="DarkOrange" />
+						</DataTrigger>
+
+						<DataTrigger
+							Binding="{Binding Level}"
+							Value="{x:Static nLog:LogLevel.Info}">
+
+							<Setter Property="Foreground" Value="CornflowerBlue" />
+						</DataTrigger>
+
+						<DataTrigger
+							Binding="{Binding Level}"
+							Value="{x:Static nLog:LogLevel.Debug}">
+
+							<Setter Property="Foreground" Value="Green" />
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</DataGrid.RowStyle>
+		</DataGrid>
+	</Grid>
+</controls:MetroWindow>
