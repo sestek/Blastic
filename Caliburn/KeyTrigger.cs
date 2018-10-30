@@ -17,12 +17,27 @@ namespace Yaver.Host.Wpf.Caliburn
 		{
 			base.OnAttached();
 			AssociatedObject.KeyDown += OnAssociatedObjectKeyDown;
+			
+			if (AssociatedObject is ButtonBase buttonBase)
+			{
+				buttonBase.Click += OnAssociatedObjectClick;
+			}
 		}
 
 		protected override void OnDetaching()
 		{
 			base.OnDetaching();
 			AssociatedObject.KeyDown -= OnAssociatedObjectKeyDown;
+			
+			if (AssociatedObject is ButtonBase buttonBase)
+			{
+				buttonBase.Click -= OnAssociatedObjectClick;
+			}
+		}
+
+		private void OnAssociatedObjectClick(object sender, RoutedEventArgs e)
+		{
+			InvokeActions(e);
 		}
 
 		private void OnAssociatedObjectKeyDown(object sender, KeyEventArgs e)
