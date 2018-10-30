@@ -82,11 +82,6 @@ namespace Yaver.Host.Wpf.UserInterface.Logging
 			};
 
 			Logs.Add(log);
-
-			if (logEvent.Level >= LogLevel.Error)
-			{
-				Show();
-			}
 		}
 
 		// Will be called by Fody.
