@@ -5,13 +5,13 @@ using System.Windows.Data;
 
 namespace Yaver.Host.Wpf.Converters
 {
-	public class InverseBoolConverter : IValueConverter
+	public class InverseVisibilityConverter : IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (value is bool boolean)
+			if (value is Visibility visibility)
 			{
-				return !boolean;
+				return visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
 			}
 			
 			return DependencyProperty.UnsetValue;
@@ -19,7 +19,7 @@ namespace Yaver.Host.Wpf.Converters
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return Convert(value, targetType, parameter, culture);
+			throw new NotImplementedException();
 		}
 	}
 }
