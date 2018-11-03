@@ -6,7 +6,7 @@ using Bindables;
 
 namespace Yaver.Host.Wpf.ControlExtensions
 {
-    public class DataGridScrolling
+    public class HorizontalScrollingExtensions
     {
         [AttachedProperty(OnPropertyChanged = nameof(OnEnableHorizontalScrollingWithShiftKeyChanged))]
         public static bool EnableHorizontalScrollingWithShiftKey { get; set; }
@@ -16,9 +16,9 @@ namespace Yaver.Host.Wpf.ControlExtensions
 
         private static void OnEnableHorizontalScrollingWithShiftKeyChanged(DependencyObject dp, DependencyPropertyChangedEventArgs e)
         {
-            DataGrid dataGrid = dp as DataGrid;
+            UIElement uiElement = dp as UIElement;
 
-            if (dataGrid == null)
+            if (uiElement == null)
             {
                 return;
             }
@@ -28,19 +28,19 @@ namespace Yaver.Host.Wpf.ControlExtensions
 
             if (wasHandling)
             {
-                dataGrid.PreviewMouseWheel -= OnPreviewMouseWheel;
+                uiElement.PreviewMouseWheel -= OnPreviewMouseWheel;
             }
 
             if (needToHandle)
             {
-                dataGrid.PreviewMouseWheel += OnPreviewMouseWheel;
+                uiElement.PreviewMouseWheel += OnPreviewMouseWheel;
             }
         }
 
         private static void OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            DataGrid dataGrid = (DataGrid)sender;
-            ScrollViewer scrollViewer = GetScrollViewer(dataGrid);
+	        UIElement uiElement = (UIElement)sender;
+            ScrollViewer scrollViewer = GetScrollViewer(uiElement);
 
             if (Keyboard.Modifiers != ModifierKeys.Shift)
             {
@@ -53,7 +53,15 @@ namespace Yaver.Host.Wpf.ControlExtensions
 
         private static ScrollViewer GetScrollViewer(UIElement element)
         {
-            if (element == null) return null;
+	        if (element == null)
+	        {
+		        return null;
+	        }
+
+	        if (element is ScrollViewer s)
+	        {
+		        return s;
+	        }
 
             ScrollViewer result = null;
 
@@ -67,6 +75,7 @@ namespace Yaver.Host.Wpf.ControlExtensions
 
                 result = GetScrollViewer(VisualTreeHelper.GetChild(element, i) as UIElement);
             }
+
             return result;
         }
     }
