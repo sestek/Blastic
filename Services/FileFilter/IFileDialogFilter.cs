@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Yaver.Host.Wpf.Services.FileFilter
+namespace WpfTemplate.Services.FileFilter
 {
 	public interface IFileDialogFilter
 	{

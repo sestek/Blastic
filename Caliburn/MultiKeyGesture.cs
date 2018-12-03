@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Windows.Input;
 
-namespace Yaver.Host.Wpf.Caliburn
+namespace WpfTemplate.Caliburn
 {
 	[TypeConverter(typeof(MultiKeyGestureConverter))]
 	public class MultiKeyGesture : InputGesture

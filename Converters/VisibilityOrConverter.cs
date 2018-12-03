@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Yaver.Host.Wpf.Converters
+namespace WpfTemplate.Converters
 {
 	public class VisibilityOrConverter : IMultiValueConverter
 	{

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using Yaver.Host.Wpf.Services.FileFilter;
+using WpfTemplate.Services.FileFilter;
 
-namespace Yaver.Host.Wpf.Services.Dialog
+namespace WpfTemplate.Services.Dialog
 {
 	public interface IDialogService
 	{

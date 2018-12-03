@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Bindables;
 
-namespace Yaver.Host.Wpf.ControlExtensions
+namespace WpfTemplate.ControlExtensions
 {
 	public class GridExtensions
 	{

@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Text;
 using System.Windows.Input;
 
-namespace Yaver.Host.Wpf.Caliburn
+namespace WpfTemplate.Caliburn
 {
 	/// <summary>
 	///   Class used to define a converter for the <see cref="MultiKeyGesture" /> class.

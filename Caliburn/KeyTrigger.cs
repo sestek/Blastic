@@ -1,9 +1,10 @@
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using Bindables;
 
-namespace Yaver.Host.Wpf.Caliburn
+namespace WpfTemplate.Caliburn
 {
 	public class KeyTrigger : TriggerBase<UIElement>
 	{

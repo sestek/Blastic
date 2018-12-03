@@ -3,9 +3,9 @@ using System.ComponentModel.Composition;
 using System.Windows;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
-using Yaver.Host.Wpf.Services.FileFilter;
+using WpfTemplate.Services.FileFilter;
 
-namespace Yaver.Host.Wpf.Services.Dialog
+namespace WpfTemplate.Services.Dialog
 {
 	[Export(typeof(IDialogService))]
 	public class DialogService : IDialogService

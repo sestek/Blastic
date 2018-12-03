@@ -1,5 +1,5 @@
 ﻿<controls:MetroWindow
-	x:Class="Yaver.Host.Wpf.UserInterface.Logging.LoggingView"
+	x:Class="WpfTemplate.UserInterface.Logging.LoggingView"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:cal="http://www.caliburnproject.org"
@@ -8,8 +8,8 @@
 	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:nLog="clr-namespace:NLog;assembly=NLog"
-	xmlns:controlExtensions="clr-namespace:Yaver.Host.Wpf.ControlExtensions"
-	xmlns:logging="clr-namespace:Yaver.Host.Wpf.UserInterface.Logging"
+	xmlns:controlExtensions="clr-namespace:WpfTemplate.ControlExtensions"
+	xmlns:logging="clr-namespace:WpfTemplate.UserInterface.Logging"
 	mc:Ignorable="d"
 	d:DataContext="{d:DesignInstance logging:LoggingViewModel}"
 	Title="Logs"

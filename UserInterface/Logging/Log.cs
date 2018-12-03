@@ -1,6 +1,6 @@
 using NLog;
 
-namespace Yaver.Host.Wpf.UserInterface.Logging
+namespace WpfTemplate.UserInterface.Logging
 {
 	public class Log
 	{

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Yaver.Host.Wpf.Services.FileFilter
+namespace WpfTemplate.Services.FileFilter
 {
 	public class FileDialogFilter : List<string>, IFileDialogFilter
 	{

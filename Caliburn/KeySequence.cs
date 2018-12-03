@@ -2,7 +2,7 @@
 using System.Text;
 using System.Windows.Input;
 
-namespace Yaver.Host.Wpf.Caliburn
+namespace WpfTemplate.Caliburn
 {
 	public class KeySequence
 	{

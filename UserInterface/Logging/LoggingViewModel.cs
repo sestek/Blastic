@@ -11,7 +11,7 @@ using NLog.Targets;
 using PropertyChanged;
 using LogManager = NLog.LogManager;
 
-namespace Yaver.Host.Wpf.UserInterface.Logging
+namespace WpfTemplate.UserInterface.Logging
 {
 	[Export]
 	[AddINotifyPropertyChangedInterface]

@@ -5,7 +5,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using Bindables;
 
-namespace Yaver.Host.Wpf.ControlExtensions
+namespace WpfTemplate.ControlExtensions
 {
     public class DataGridRowNumberBehavior
     {

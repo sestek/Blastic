@@ -1,4 +1,4 @@
-﻿namespace Yaver.Host.Wpf.UserInterface.Home
+﻿namespace WpfTemplate.UserInterface.Home
 {
 	public partial class HomeView
 	{

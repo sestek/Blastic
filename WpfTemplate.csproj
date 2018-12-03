@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4590E6CE-2C76-4299-B6D4-E1395A7AF8DE}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Yaver.Host.Wpf</RootNamespace>
-    <AssemblyName>Yaver.Host.Wpf</AssemblyName>
+    <RootNamespace>WpfTemplate</RootNamespace>
+    <AssemblyName>WpfTemplate</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Yaver.Host.Wpf.Initialization.EntryPoint</StartupObject>
+    <StartupObject>WpfTemplate.Initialization.EntryPoint</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -72,10 +72,11 @@
     <Compile Include="Caliburn\ScreenBase.cs" />
     <Compile Include="ControlExtensions\DataGridColumnSizeExtensions.cs" />
     <Compile Include="ControlExtensions\DataGridRowNumberBehavior.cs" />
-    <Compile Include="ControlExtensions\DataGridRowScrolling.cs" />
+    <Compile Include="ControlExtensions\HorizontalScrollingExtensions.cs" />
     <Compile Include="ControlExtensions\GridExtensions.cs" />
     <Compile Include="ControlExtensions\PanelExtensions.cs" />
     <Compile Include="ControlExtensions\PasswordBoxExtensions.cs" />
+    <Compile Include="ControlExtensions\TextBoxMasking.cs" />
     <Compile Include="Controls\BusyIndicator.xaml.cs">
       <DependentUpon>BusyIndicator.xaml</DependentUpon>
     </Compile>

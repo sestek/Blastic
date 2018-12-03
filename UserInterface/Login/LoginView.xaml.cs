@@ -1,4 +1,4 @@
-﻿namespace Yaver.Host.Wpf.UserInterface.Login
+﻿namespace WpfTemplate.UserInterface.Login
 {
 	public partial class LoginView
 	{

@@ -1,4 +1,4 @@
-﻿namespace Yaver.Host.Wpf
+﻿namespace WpfTemplate
 {
 	public partial class App
 	{

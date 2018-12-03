@@ -2,12 +2,12 @@
 using System.ComponentModel.Composition;
 using System.Linq;
 using PropertyChanged;
-using Yaver.Host.Wpf.Caliburn;
-using Yaver.Host.Wpf.Execution;
-using Yaver.Host.Wpf.UserInterface.Logging;
-using Yaver.Host.Wpf.UserInterface.Settings;
+using WpfTemplate.Caliburn;
+using WpfTemplate.Execution;
+using WpfTemplate.UserInterface.Logging;
+using WpfTemplate.UserInterface.Settings;
 
-namespace Yaver.Host.Wpf.UserInterface.Main
+namespace WpfTemplate.UserInterface.Main
 {
 	[Export]
 	[AddINotifyPropertyChangedInterface]

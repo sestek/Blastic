@@ -1,7 +1,7 @@
 ﻿using Bindables;
-using Yaver.Host.Wpf.Execution;
+using WpfTemplate.Execution;
 
-namespace Yaver.Host.Wpf.Controls
+namespace WpfTemplate.Controls
 {
 	public partial class BusyIndicator
 	{

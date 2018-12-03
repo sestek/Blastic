@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 
-namespace Yaver.Host.Wpf.Converters
+namespace WpfTemplate.Converters
 {
 	public class ValueConverterGroup : List<IValueConverter>, IValueConverter
 	{

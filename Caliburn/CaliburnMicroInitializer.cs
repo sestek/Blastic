@@ -4,7 +4,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using TriggerBase = System.Windows.Interactivity.TriggerBase;
 
-namespace Yaver.Host.Wpf.Caliburn
+namespace WpfTemplate.Caliburn
 {
 	public class CaliburnMicroInitializer
 	{

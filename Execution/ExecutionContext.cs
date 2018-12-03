@@ -5,9 +5,9 @@ using Caliburn.Micro;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.Logging;
 using PropertyChanged;
-using Yaver.Host.Wpf.Services.Dialog;
+using WpfTemplate.Services.Dialog;
 
-namespace Yaver.Host.Wpf.Execution
+namespace WpfTemplate.Execution
 {
 	[AddINotifyPropertyChangedInterface]
 	public class ExecutionContext

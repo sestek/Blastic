@@ -5,10 +5,10 @@ using System.Windows;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using PropertyChanged;
-using Yaver.Host.Wpf.Caliburn;
-using Yaver.Host.Wpf.Execution;
+using WpfTemplate.Caliburn;
+using WpfTemplate.Execution;
 
-namespace Yaver.Host.Wpf.UserInterface.Settings
+namespace WpfTemplate.UserInterface.Settings
 {
 	[Export]
 	[AddINotifyPropertyChangedInterface]

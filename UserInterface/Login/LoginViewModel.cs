@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.Composition;
 using PropertyChanged;
-using Yaver.Host.Wpf.Caliburn;
-using Yaver.Host.Wpf.Execution;
+using WpfTemplate.Caliburn;
+using WpfTemplate.Execution;
 
-namespace Yaver.Host.Wpf.UserInterface.Login
+namespace WpfTemplate.UserInterface.Login
 {
 	[Export]
 	[AddINotifyPropertyChangedInterface]

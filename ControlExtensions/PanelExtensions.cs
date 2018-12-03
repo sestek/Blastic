@@ -4,7 +4,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using Bindables;
 
-namespace Yaver.Host.Wpf.ControlExtensions
+namespace WpfTemplate.ControlExtensions
 {
 	public class PanelExtensions
 	{

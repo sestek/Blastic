@@ -6,7 +6,7 @@ using NLog;
 using NLog.Extensions.Logging;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
-namespace Yaver.Host.Wpf.Initialization
+namespace WpfTemplate.Initialization
 {
 	public class EntryPoint
 	{

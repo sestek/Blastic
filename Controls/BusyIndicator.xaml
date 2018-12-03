@@ -1,10 +1,10 @@
 ﻿<UserControl
-	x:Class="Yaver.Host.Wpf.Controls.BusyIndicator"
+	x:Class="WpfTemplate.Controls.BusyIndicator"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:cal="http://www.caliburnproject.org"
-	xmlns:controlExtensions="clr-namespace:Yaver.Host.Wpf.ControlExtensions"
-	xmlns:controls="clr-namespace:Yaver.Host.Wpf.Controls"
+	xmlns:controlExtensions="clr-namespace:WpfTemplate.ControlExtensions"
+	xmlns:controls="clr-namespace:WpfTemplate.Controls"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"

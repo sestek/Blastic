@@ -1,8 +1,8 @@
 using System;
 using Caliburn.Micro;
-using Yaver.Host.Wpf.Execution;
+using WpfTemplate.Execution;
 
-namespace Yaver.Host.Wpf.Caliburn
+namespace WpfTemplate.Caliburn
 {
 	public class ScreenBase : Screen, IHasExecutionContext
 	{

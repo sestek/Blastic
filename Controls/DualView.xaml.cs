@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using Bindables;
 
-namespace Yaver.Host.Wpf.Controls
+namespace WpfTemplate.Controls
 {
 	public partial class DualView
 	{

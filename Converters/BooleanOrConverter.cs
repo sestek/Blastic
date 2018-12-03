@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Yaver.Host.Wpf.Converters
+namespace WpfTemplate.Converters
 {
 	public class BooleanOrConverter : IMultiValueConverter
 	{

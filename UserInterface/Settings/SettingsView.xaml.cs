@@ -1,4 +1,4 @@
-﻿namespace Yaver.Host.Wpf.UserInterface.Settings
+﻿namespace WpfTemplate.UserInterface.Settings
 {
 	public partial class SettingsView
 	{

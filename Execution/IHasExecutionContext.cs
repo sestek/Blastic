@@ -1,4 +1,4 @@
-namespace Yaver.Host.Wpf.Execution
+namespace WpfTemplate.Execution
 {
 	public interface IHasExecutionContext
 	{

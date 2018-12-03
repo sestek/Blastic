@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Yaver.Host.Wpf.Properties
+namespace WpfTemplate.Properties
 {
 
 

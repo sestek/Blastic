@@ -1,4 +1,4 @@
-﻿namespace Yaver.Host.Wpf.UserInterface.Logging
+﻿namespace WpfTemplate.UserInterface.Logging
 {
 	public partial class LoggingView
 	{

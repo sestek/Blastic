@@ -1,4 +1,4 @@
-﻿namespace Yaver.Host.Wpf.Controls.RequestField
+﻿namespace WpfTemplate.Controls.RequestField
 {
 	public partial class RequestFieldView
 	{

@@ -1,4 +1,4 @@
-﻿namespace Yaver.Host.Wpf.UserInterface.Main
+﻿namespace WpfTemplate.UserInterface.Main
 {
 	public partial class MainView
 	{

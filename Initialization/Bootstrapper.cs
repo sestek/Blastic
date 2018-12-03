@@ -8,10 +8,10 @@ using System.Windows;
 using Caliburn.Micro;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.Logging;
-using Yaver.Host.Wpf.Caliburn;
-using Yaver.Host.Wpf.UserInterface.Main;
+using WpfTemplate.Caliburn;
+using WpfTemplate.UserInterface.Main;
 
-namespace Yaver.Host.Wpf.Initialization
+namespace WpfTemplate.Initialization
 {
 	public class Bootstrapper : BootstrapperBase
 	{

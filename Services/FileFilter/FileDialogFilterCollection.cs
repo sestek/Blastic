@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Yaver.Host.Wpf.Services.FileFilter
+namespace WpfTemplate.Services.FileFilter
 {
 	public class FileDialogFilterCollection : List<FileDialogFilter>, IFileDialogFilter
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Data;
 
-namespace Yaver.Host.Wpf.Converters
+namespace WpfTemplate.Converters
 {
 	public class TypeOfConverter : IValueConverter
 	{

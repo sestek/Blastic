@@ -1,4 +1,4 @@
-namespace Yaver.Host.Wpf.Services.FileFilter
+namespace WpfTemplate.Services.FileFilter
 {
 	public class FileDialogFilters
 	{

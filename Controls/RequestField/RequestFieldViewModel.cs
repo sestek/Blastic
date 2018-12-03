@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using PropertyChanged;
 
-namespace Yaver.Host.Wpf.Controls.RequestField
+namespace WpfTemplate.Controls.RequestField
 {
 	[AddINotifyPropertyChangedInterface]
 	public class RequestFieldViewModel : IDataErrorInfo

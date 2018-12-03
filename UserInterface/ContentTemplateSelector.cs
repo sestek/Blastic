@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using Yaver.Host.Wpf.UserInterface.Home;
-using Yaver.Host.Wpf.UserInterface.Login;
+using WpfTemplate.UserInterface.Home;
+using WpfTemplate.UserInterface.Login;
 
-namespace Yaver.Host.Wpf.UserInterface
+namespace WpfTemplate.UserInterface
 {
 	public class ContentTemplateSelector : DataTemplateSelector
 	{
