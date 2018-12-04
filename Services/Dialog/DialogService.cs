@@ -1,13 +1,13 @@
 ﻿using System;
-using System.ComponentModel.Composition;
 using System.Windows;
+using Autofac;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using WpfTemplate.Services.FileFilter;
 
 namespace WpfTemplate.Services.Dialog
 {
-	[Export(typeof(IDialogService))]
+	[SingleInstance]
 	public class DialogService : IDialogService
 	{
 		public bool? ShowDialog<T>(object viewModel) where T : Window

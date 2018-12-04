@@ -31,7 +31,7 @@ namespace WpfTemplate.Initialization
 			try
 			{
 				_application = new App();
-				_bootstrapper = new Bootstrapper(loggerFactory);
+				_bootstrapper = new Bootstrapper();
 				_bootstrapper.Initialize();
 
 				_application.DispatcherUnhandledException += (sender, args) =>

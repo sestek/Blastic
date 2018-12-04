@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel;
-using System.ComponentModel.Composition;
 using System.Dynamic;
 using System.Windows;
 using System.Windows.Data;
+using Autofac;
 using Caliburn.Micro;
 using NLog;
 using NLog.Config;
@@ -13,7 +13,7 @@ using LogManager = NLog.LogManager;
 
 namespace WpfTemplate.UserInterface.Logging
 {
-	[Export]
+	[SingleInstance]
 	[AddINotifyPropertyChangedInterface]
 	public sealed class LoggingViewModel : TargetWithLayout, IViewAware
 	{
@@ -24,8 +24,7 @@ namespace WpfTemplate.UserInterface.Logging
 
 		public IObservableCollection<Log> Logs { get; }
 		public IObservableCollection<LogLevel> LogLevels { get; }
-
-		[ImportingConstructor]
+		
 		public LoggingViewModel(IWindowManager windowManager)
 		{
 			_windowManager = windowManager;

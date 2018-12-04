@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.ReflectionModel;
-using System.Linq;
 using System.Windows;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Caliburn.Micro;
 using MaterialDesignThemes.Wpf;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 using WpfTemplate.Caliburn;
 using WpfTemplate.UserInterface.Main;
 
@@ -15,64 +16,64 @@ namespace WpfTemplate.Initialization
 {
 	public class Bootstrapper : BootstrapperBase
 	{
-		private readonly ILoggerFactory _loggerFactory;
-		private CompositionContainer _container;
+		private IContainer _container;
 
-		public Bootstrapper(ILoggerFactory loggerFactory)
-		{
-			_loggerFactory = loggerFactory;
-		}
-		
 		protected override void Configure()
 		{
 			CaliburnMicroInitializer.Initialize();
 
-			AggregateCatalog aggregateCatalog = new AggregateCatalog();
-			DirectoryCatalog dllCatalog = new DirectoryCatalog("./", "*.dll");
-			DirectoryCatalog exeCatalog = new DirectoryCatalog("./", "*.exe");
+			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+			configurationBuilder.AddInMemoryCollection(new Dictionary<string, string>
+			{
+				{ "DatabaseProvider", "SQLite" }
+			});
 
-			aggregateCatalog.Catalogs.Add(dllCatalog);
-			aggregateCatalog.Catalogs.Add(exeCatalog);
+			ServiceCollection serviceCollection = new ServiceCollection();
+			serviceCollection
+				.AddLogging(builder =>
+				{
+					builder.SetMinimumLevel(LogLevel.Trace);
+					builder.AddNLog(new NLogProviderOptions
+					{
+						CaptureMessageTemplates = true,
+						CaptureMessageProperties = true
+					});
+				});
 
-			AssemblySource.Instance.AddRange(
-				aggregateCatalog.Parts
-					.Select(part => ReflectionModelServices.GetPartType(part).Value.Assembly)
-					.Where(assembly => !AssemblySource.Instance.Contains(assembly)));
+			ContainerBuilder containerBuilder = new ContainerBuilder();
+			
+			containerBuilder.RegisterType<WindowManager>().As<IWindowManager>();
+			containerBuilder.RegisterType<EventAggregator>().As<IEventAggregator>();
+			containerBuilder.RegisterType<SnackbarMessageQueue>().As<ISnackbarMessageQueue>();
+			containerBuilder.Populate(serviceCollection);
+			containerBuilder.RegisterByAttributes(typeof(Bootstrapper).Assembly);
 
-			_container = new CompositionContainer(aggregateCatalog);
-
-			CompositionBatch batch = new CompositionBatch();
-
-			batch.AddExportedValue(_loggerFactory);
-			batch.AddExportedValue<IWindowManager>(new WindowManager());
-			batch.AddExportedValue<IEventAggregator>(new EventAggregator());
-			batch.AddExportedValue<ISnackbarMessageQueue>(new SnackbarMessageQueue());
-			batch.AddExportedValue(aggregateCatalog);
-
-			_container.Compose(batch);
+			_container = containerBuilder.Build();
 		}
 
 		protected override object GetInstance(Type serviceType, string key)
 		{
-			string contract = string.IsNullOrEmpty(key) ? AttributedModelServices.GetContractName(serviceType) : key;
-			List<object> exports = _container.GetExportedValues<object>(contract).ToList();
-
-			if (exports.Any())
+			if (string.IsNullOrWhiteSpace(key) && _container.IsRegistered(serviceType))
 			{
-				return exports.First();
+				return _container.Resolve(serviceType);
 			}
 
-			throw new Exception($"Could not locate any instances of contract {contract}.");
+			if (_container.IsRegisteredWithKey(key, serviceType))
+			{
+				return _container.ResolveKeyed(key, serviceType);
+			}
+
+			throw new Exception($"Could not locate any instances of contract {key ?? serviceType.Name}.");
 		}
 
 		protected override IEnumerable<object> GetAllInstances(Type serviceType)
 		{
-			return _container.GetExportedValues<object>(AttributedModelServices.GetContractName(serviceType));
+			return _container.Resolve(typeof(IEnumerable<>).MakeGenericType(serviceType)) as IEnumerable<object>;
 		}
 
 		protected override void BuildUp(object instance)
 		{
-			_container.SatisfyImportsOnce(instance);
+			_container.InjectProperties(instance);
 		}
 
 		protected override void OnStartup(object sender, StartupEventArgs e)

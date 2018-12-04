@@ -1,15 +1,15 @@
-﻿using System.ComponentModel.Composition;
+﻿using Autofac;
 using PropertyChanged;
 using WpfTemplate.Caliburn;
 using WpfTemplate.Execution;
 
 namespace WpfTemplate.UserInterface.Login
 {
-	[Export]
+	[SingleInstance]
 	[AddINotifyPropertyChangedInterface]
 	public class LoginViewModel : ScreenBase
 	{
-		public LoginViewModel(ExecutionContextFactory executionContextFactory) : base(executionContextFactory)
+		public LoginViewModel(ExecutionContext executionContext) : base(executionContext)
 		{
 		}
 	}

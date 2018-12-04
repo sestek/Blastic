@@ -1,4 +1,3 @@
-using System;
 using Caliburn.Micro;
 using WpfTemplate.Execution;
 
@@ -8,9 +7,9 @@ namespace WpfTemplate.Caliburn
 	{
 		public ExecutionContext ExecutionContext { get; }
 
-		public ScreenBase(ExecutionContextFactory executionContextFactory, Action<Exception> errorHandler = null)
+		public ScreenBase(ExecutionContext executionContext)
 		{
-			ExecutionContext = executionContextFactory.Create(GetType(), errorHandler);
+			ExecutionContext = executionContext;
 		}
 	}
 }

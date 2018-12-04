@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Dynamic;
 using System.Windows;
+using Autofac;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using PropertyChanged;
@@ -10,7 +10,7 @@ using WpfTemplate.Execution;
 
 namespace WpfTemplate.UserInterface.Settings
 {
-	[Export]
+	[SingleInstance]
 	[AddINotifyPropertyChangedInterface]
 	public sealed class SettingsViewModel : ScreenBase
 	{
@@ -18,9 +18,8 @@ namespace WpfTemplate.UserInterface.Settings
 
 		public IEnumerable<Swatch> Swatches { get; }
 		public bool IsDark { get; set; }
-
-		[ImportingConstructor]
-		public SettingsViewModel(ExecutionContextFactory executionContextFactory) : base(executionContextFactory)
+		
+		public SettingsViewModel(ExecutionContext executionContext) : base(executionContext)
 		{
 			Swatches = new SwatchesProvider().Swatches;
 			DisplayName = "Settings";

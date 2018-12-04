@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
+using Autofac;
 using PropertyChanged;
 using WpfTemplate.Caliburn;
 using WpfTemplate.Execution;
@@ -9,21 +9,20 @@ using WpfTemplate.UserInterface.Settings;
 
 namespace WpfTemplate.UserInterface.Main
 {
-	[Export]
+	[SingleInstance]
 	[AddINotifyPropertyChangedInterface]
 	public class MainViewModel : ConductorOneActiveBase<IMainTab>
 	{
 		private readonly LoggingViewModel _loggingViewModel;
 		private readonly SettingsViewModel _settingsViewModel;
-
-		[ImportingConstructor]
+		
 		public MainViewModel(
-			ExecutionContextFactory executionContextFactory,
+			ExecutionContext executionContext,
 			LoggingViewModel loggingViewModel,
 			SettingsViewModel settingsViewModel,
-			[ImportMany] IEnumerable<IMainTab> mainTabs)
+			IEnumerable<IMainTab> mainTabs)
 			:
-			base(executionContextFactory)
+			base(executionContext)
 		{
 			_loggingViewModel = loggingViewModel;
 			_settingsViewModel = settingsViewModel;

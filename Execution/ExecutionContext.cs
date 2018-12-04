@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Autofac;
 using Caliburn.Micro;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.Logging;
@@ -9,11 +10,11 @@ using WpfTemplate.Services.Dialog;
 
 namespace WpfTemplate.Execution
 {
+	[InstancePerDependency]
 	[AddINotifyPropertyChangedInterface]
 	public class ExecutionContext
 	{
 		private readonly ILogger _logger;
-		private readonly Action<Exception> _errorHandler;
 
 		public IDialogService DialogService { get; }
 		public IWindowManager WindowManager { get; }
@@ -24,18 +25,15 @@ namespace WpfTemplate.Execution
 		public CancellationTokenSource CancellationTokenSource { get; private set; }
 
 		public ExecutionContext(
-			ILoggerFactory loggerFactory,
+			ILogger<ExecutionContext> logger,
 			IDialogService dialogService,
 			IWindowManager windowManager,
-			ISnackbarMessageQueue messageQueue,
-			Type ownerType,
-			Action<Exception> errorHandler)
+			ISnackbarMessageQueue messageQueue)
 		{
 			DialogService = dialogService;
 			WindowManager = windowManager;
 			MessageQueue = messageQueue;
-			_errorHandler = errorHandler;
-			_logger = loggerFactory.CreateLogger(ownerType);
+			_logger = logger;
 
 			CancellationTokenSource = new CancellationTokenSource();
 		}
@@ -70,7 +68,6 @@ namespace WpfTemplate.Execution
 			catch (Exception exception)
 			{
 				_logger.LogError(exception, failMessage);
-				_errorHandler?.Invoke(exception);
 
 				if (!string.IsNullOrEmpty(failMessage))
 				{
