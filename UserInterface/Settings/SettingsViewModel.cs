@@ -19,7 +19,7 @@ namespace WpfTemplate.UserInterface.Settings
 		public IEnumerable<Swatch> Swatches { get; }
 		public bool IsDark { get; set; }
 		
-		public SettingsViewModel(ExecutionContext executionContext) : base(executionContext)
+		public SettingsViewModel(ExecutionContextFactory executionContextFactory) : base(executionContextFactory)
 		{
 			Swatches = new SwatchesProvider().Swatches;
 			DisplayName = "Settings";

@@ -9,7 +9,7 @@ namespace WpfTemplate.UserInterface.Login
 	[AddINotifyPropertyChangedInterface]
 	public class LoginViewModel : ScreenBase
 	{
-		public LoginViewModel(ExecutionContext executionContext) : base(executionContext)
+		public LoginViewModel(ExecutionContextFactory executionContextFactory) : base(executionContextFactory)
 		{
 		}
 	}

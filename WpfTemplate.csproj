@@ -92,6 +92,7 @@
     <Compile Include="Converters\VisibilityOrConverter.cs" />
     <Compile Include="Converters\VisibilityAndConverter.cs" />
     <Compile Include="Execution\ExecutionContext.cs" />
+    <Compile Include="Execution\ExecutionContextFactory.cs" />
     <Compile Include="Execution\IHasExecutionContext.cs" />
     <Compile Include="UserInterface\ContentTemplateSelector.cs" />
     <Compile Include="UserInterface\Home\HomeView.xaml.cs">

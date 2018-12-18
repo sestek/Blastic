@@ -17,12 +17,12 @@ namespace WpfTemplate.UserInterface.Main
 		private readonly SettingsViewModel _settingsViewModel;
 		
 		public MainViewModel(
-			ExecutionContext executionContext,
+			ExecutionContextFactory executionContextFactory,
 			LoggingViewModel loggingViewModel,
 			SettingsViewModel settingsViewModel,
 			IEnumerable<IMainTab> mainTabs)
 			:
-			base(executionContext)
+			base(executionContextFactory)
 		{
 			_loggingViewModel = loggingViewModel;
 			_settingsViewModel = settingsViewModel;

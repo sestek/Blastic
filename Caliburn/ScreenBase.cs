@@ -6,10 +6,12 @@ namespace WpfTemplate.Caliburn
 	public class ScreenBase : Screen, IHasExecutionContext
 	{
 		public ExecutionContext ExecutionContext { get; }
+		public ExecutionContextFactory ExecutionContextFactory { get; }
 
-		public ScreenBase(ExecutionContext executionContext)
+		public ScreenBase(ExecutionContextFactory executionContextFactory)
 		{
-			ExecutionContext = executionContext;
+			ExecutionContextFactory = executionContextFactory;
+			ExecutionContext = executionContextFactory.Create();
 		}
 	}
 }
