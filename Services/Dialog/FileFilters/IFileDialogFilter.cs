@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WpfTemplate.Services.FileFilter
+namespace WpfTemplate.Services.Dialog.FileFilters
 {
 	public interface IFileDialogFilter
 	{

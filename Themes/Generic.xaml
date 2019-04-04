@@ -1,0 +1,6 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="/WpfTemplate;component/Themes/HelpView.xaml" />
+		<ResourceDictionary Source="/WpfTemplate;component/Themes/LabeledControl.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

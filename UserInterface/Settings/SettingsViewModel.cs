@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
-using MaterialDesignColors;
-using MaterialDesignThemes.Wpf;
+using Caliburn.Micro;
 using PropertyChanged;
 using WpfTemplate.Caliburn;
+using WpfTemplate.Diagnostics;
 using WpfTemplate.Execution;
 
 namespace WpfTemplate.UserInterface.Settings
@@ -16,31 +19,85 @@ namespace WpfTemplate.UserInterface.Settings
 	{
 		private Window _activeWindow;
 
-		public IEnumerable<Swatch> Swatches { get; }
-		public bool IsDark { get; set; }
-		
-		public SettingsViewModel(ExecutionContextFactory executionContextFactory) : base(executionContextFactory)
+		public IObservableCollection<ISettingsSectionViewModel> Items { get; set; }
+		public IObservableCollection<DiagnosticMessage> DiagnosticMessages { get; set; }
+
+		public bool IsDiagnosticMessagesVisible { get; set; }
+
+		public SettingsViewModel(
+			ExecutionContextFactory executionContextFactory,
+			IEnumerable<ISettingsSectionViewModel> sections)
+			:
+			base(executionContextFactory)
 		{
-			Swatches = new SwatchesProvider().Swatches;
+			Items = new BindableCollection<ISettingsSectionViewModel>(sections);
+			DiagnosticMessages = new BindableCollection<DiagnosticMessage>();
+
 			DisplayName = "Settings";
 		}
 
-		// Will be called by Fody.
-		private void OnIsDarkChanged()
+		protected override async void OnActivate()
 		{
-			new PaletteHelper().SetLightDark(IsDark);
-		}
-		
-		public void ApplyPrimary(Swatch swatch)
-		{
-			new PaletteHelper().ReplacePrimaryColor(swatch);
+			await ReadSettings();
 		}
 
-		public void ApplyAccent(Swatch swatch)
+		public async Task ReadSettings()
 		{
-			new PaletteHelper().ReplaceAccentColor(swatch);
+			async Task ReadSettings(CancellationToken cancellationToken)
+			{
+				foreach (ISettingsSectionViewModel item in Items)
+				{
+					await item.ReadSettings(cancellationToken);
+				}
+			}
+
+			await ExecutionContext.Execute(ReadSettings);
 		}
-		
+
+		public async void Save()
+		{
+			DiagnosticMessages.Clear();
+
+			foreach (ISettingsSectionViewModel item in Items)
+			{
+				IEnumerable<DiagnosticMessage> diagnosticMessages = item.GetDiagnosticMessages();
+				DiagnosticMessages.AddRange(diagnosticMessages);
+			}
+
+			if (DiagnosticMessages.Any(x => x.Severity == Severity.Error))
+			{
+				ShowDiagnosticMessages();
+				return;
+			}
+
+			async Task Save(CancellationToken cancellationToken)
+			{
+				foreach (ISettingsSectionViewModel item in Items)
+				{
+					await item.Save(cancellationToken);
+				}
+			}
+
+			await ExecutionContext.Execute(Save);
+
+			TryClose();
+		}
+
+		private void ShowDiagnosticMessages()
+		{
+			IsDiagnosticMessagesVisible = true;
+		}
+
+		public void HideDiagnosticMessages()
+		{
+			IsDiagnosticMessagesVisible = false;
+		}
+
+		public void Cancel()
+		{
+			TryClose();
+		}
+
 		public void Show()
 		{
 			if (_activeWindow != null && PresentationSource.FromVisual(_activeWindow) != null)

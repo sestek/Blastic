@@ -10,7 +10,10 @@ namespace WpfTemplate.UserInterface.Home
 	{
 		public int Order => 0;
 		
-		public HomeViewModel(ExecutionContextFactory executionContextFactory) : base(executionContextFactory)
+		public HomeViewModel(
+			ExecutionContextFactory executionContextFactory)
+			:
+			base(executionContextFactory)
 		{
 			DisplayName = "Home";
 		}

@@ -1,62 +1,54 @@
-﻿<UserControl
-	x:Class="WpfTemplate.Controls.RequestField.RequestFieldView"
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:cal="http://www.caliburnproject.org"
-	xmlns:controlExtensions="clr-namespace:WpfTemplate.ControlExtensions"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:local="clr-namespace:WpfTemplate.Controls.RequestField"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"
-	xmlns:converters="clr-namespace:WpfTemplate.Converters"
-	mc:Ignorable="d"
-	d:DataContext="{d:DesignInstance local:RequestFieldViewModel}">
-	
+﻿<UserControl x:Class="WpfTemplate.Controls.RequestField.RequestFieldView"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:cal="http://www.caliburnproject.org"
+			 xmlns:controlExtensions="clr-namespace:WpfTemplate.ControlExtensions"
+			 xmlns:converters="clr-namespace:WpfTemplate.Converters"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:local="clr-namespace:WpfTemplate.Controls.RequestField"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"
+			 mc:Ignorable="d"
+			 d:DataContext="{d:DesignInstance local:RequestFieldViewModel}">
+
 	<UserControl.Resources>
-		<converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
+		<converters:InverseBoolConverter x:Key="InverseBoolConverter" />
 	</UserControl.Resources>
 
-	<simpleChildWindow:ChildWindow
-		cal:Message.Attach="[Key Escape] = [Cancel];[Key Enter] = [OkNotDisabled]"
-		CloseByEscape="False"
-		IsOpen="{Binding IsOpen}"
-		ShowTitleBar="False">
+	<simpleChildWindow:ChildWindow cal:Message.Attach="[Key Escape] = [Cancel];[Key Enter] = [OkNotDisabled]"
+								   CloseByEscape="False"
+								   IsOpen="{Binding IsOpen}"
+								   ShowTitleBar="False">
 
-		<Grid
-			Margin="8,16,8,8"
-			controlExtensions:GridExtensions.RowDefinitions="Auto,Auto,Auto">
+		<Grid Margin="8,16,8,8"
+			  controlExtensions:GridExtensions.RowDefinitions="Auto,Auto,Auto">
 
-			<TextBlock
-				Grid.Row="0"
-				MinWidth="400"
-				MaxWidth="600"
-				Text="{Binding Explanation}" />
+			<TextBlock Grid.Row="0"
+					   MinWidth="400"
+					   MaxWidth="600"
+					   Text="{Binding Explanation}" />
 
-			<TextBox
-				Name="FieldTextBox"
-				Grid.Row="1"
-				Margin="0,8,0,0"
-				controlExtensions:TextBoxMasking.Mask="{Binding Mask}"
-				AcceptsReturn="{Binding IsMultiline}"
-				Text="{Binding Field, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+			<TextBox Name="FieldTextBox"
+					 Grid.Row="1"
+					 Margin="0,8,0,0"
+					 controlExtensions:TextBoxMasking.Mask="{Binding Mask}"
+					 AcceptsReturn="{Binding IsMultiline}"
+					 Text="{Binding Field, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
 
-			<StackPanel
-				Grid.Row="2"
-				Margin="0,16,0,0"
-				HorizontalAlignment="Right"
-				Orientation="Horizontal">
+			<StackPanel Grid.Row="2"
+						Margin="0,16,0,0"
+						HorizontalAlignment="Right"
+						Orientation="Horizontal">
 
-				<Button
-					cal:Message.Attach="Ok"
-					Content="OK"
-					IsEnabled="{Binding Path=(Validation.HasError), ElementName=FieldTextBox, Converter={StaticResource InverseBoolConverter}}"
-					Style="{StaticResource MaterialDesignFlatButton}" />
+				<Button cal:Message.Attach="Ok"
+						Content="OK"
+						IsEnabled="{Binding Path=(Validation.HasError), ElementName=FieldTextBox, Converter={StaticResource InverseBoolConverter}}"
+						Style="{StaticResource MaterialDesignFlatButton}" />
 
-				<Button
-					Margin="8,0,0,0"
-					cal:Message.Attach="Cancel"
-					Content="Cancel"
-					Style="{StaticResource MaterialDesignFlatButton}" />
+				<Button Margin="8,0,0,0"
+						cal:Message.Attach="Cancel"
+						Content="Cancel"
+						Style="{StaticResource MaterialDesignFlatButton}" />
 			</StackPanel>
 		</Grid>
 	</simpleChildWindow:ChildWindow>

@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using WpfTemplate.Services.FileFilter;
+using WpfTemplate.Services.Dialog.FileFilters;
 
 namespace WpfTemplate.Services.Dialog
 {
@@ -7,9 +7,9 @@ namespace WpfTemplate.Services.Dialog
 	{
 		bool? ShowDialog<T>(object viewModel) where T : Window;
 
-		string ShowOpenFileDialog(IFileDialogFilter filter);
-		string ShowSaveFileDialog(IFileDialogFilter filter);
+		string ShowOpenFileDialog(FileDialogOptions options = default);
+		string ShowSaveFileDialog(FileDialogOptions options = default);
 
-		string ShowSelectFolderDialog();
+		string ShowSelectFolderDialog(FileDialogOptions options = default);
 	}
 }

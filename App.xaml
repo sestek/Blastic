@@ -31,15 +31,11 @@
 				<!--  Material Design: Dragablz Compatibility  -->
 				<ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/MaterialDesign.xaml" />
 
-				<ResourceDictionary Source="Theming/Styles.xaml" />
+				<ResourceDictionary Source="Themes/Theme.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 
 			<Style BasedOn="{StaticResource MaterialDesignTabablzControlStyle}"
 				   TargetType="{x:Type dragablz:TabablzControl}" />
-
-			<Color x:Key="RedColor">#FFF44336</Color>
-			<Color x:Key="GreenColor">#FF4CAF50</Color>
-			<Color x:Key="OrangeColor">#FFFF9800</Color>
 
 			<!--  MahApps Brushes  -->
 			<SolidColorBrush x:Key="HighlightBrush"
@@ -69,13 +65,6 @@
 			<SolidColorBrush x:Key="IdealForegroundDisabledBrush"
 							 Opacity="0.4"
 							 Color="{DynamicResource Primary500}" />
-
-			<SolidColorBrush x:Key="RedBrush"
-							 Color="{StaticResource RedColor}" />
-			<SolidColorBrush x:Key="GreenBrush"
-							 Color="{StaticResource GreenColor}" />
-			<SolidColorBrush x:Key="OrangeBrush"
-							 Color="{StaticResource OrangeColor}" />
 
 			<Style x:Key="DataGridCellNoSelectedAdornerStyle"
 				   BasedOn="{StaticResource {x:Type DataGridCell}}"

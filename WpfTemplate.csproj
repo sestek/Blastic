@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -63,14 +64,17 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Caliburn\CaliburnMicroInitializer.cs" />
+    <Compile Include="Caliburn\ConductorAllActiveBase.cs" />
     <Compile Include="Caliburn\ConductorOneActiveBase.cs" />
     <Compile Include="Caliburn\KeySequence.cs" />
     <Compile Include="Caliburn\KeyTrigger.cs" />
     <Compile Include="Caliburn\MultiKeyGesture.cs" />
     <Compile Include="Caliburn\MultiKeyGestureConverter.cs" />
     <Compile Include="Caliburn\ScreenBase.cs" />
+    <Compile Include="Collections\ObservableDictionary.cs" />
     <Compile Include="ControlExtensions\DataGridColumnSizeExtensions.cs" />
     <Compile Include="ControlExtensions\DataGridRowNumberBehavior.cs" />
+    <Compile Include="ControlExtensions\FocusExtensions.cs" />
     <Compile Include="ControlExtensions\HorizontalScrollingExtensions.cs" />
     <Compile Include="ControlExtensions\GridExtensions.cs" />
     <Compile Include="ControlExtensions\PanelExtensions.cs" />
@@ -79,50 +83,105 @@
     <Compile Include="Controls\BusyIndicator.xaml.cs">
       <DependentUpon>BusyIndicator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DualView.xaml.cs">
+      <DependentUpon>DualView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FilePicker.xaml.cs">
+      <DependentUpon>FilePicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Help\HelpView.cs" />
+    <Compile Include="Controls\LabeledControl.cs" />
+    <Compile Include="Controls\LabeledTextBlock.xaml.cs">
+      <DependentUpon>LabeledTextBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LabeledTextBox.xaml.cs">
+      <DependentUpon>LabeledTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RequestField\RequestFieldView.xaml.cs">
+      <DependentUpon>RequestFieldView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RequestField\RequestFieldViewModel.cs" />
+    <Compile Include="Controls\Selectable\SelectableViewModel.cs" />
     <Compile Include="Converters\BooleanOrConverter.cs" />
     <Compile Include="Converters\BooleanAndConverter.cs" />
+    <Compile Include="Converters\CountToBoolConverter.cs" />
+    <Compile Include="Converters\CountToVisibilityConverter.cs" />
     <Compile Include="Converters\IntToByteSizeConverter.cs" />
     <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\InverseBoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\InverseVisibilityConverter.cs" />
+    <Compile Include="Converters\MultiValueConverterGroup.cs" />
     <Compile Include="Converters\NullToBooleanConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="Converters\NumberToStarGridLengthConverter.cs" />
     <Compile Include="Converters\ObjectToTypeConverter.cs" />
+    <Compile Include="Converters\RatioConverter.cs" />
     <Compile Include="Converters\TypeOfConverter.cs" />
     <Compile Include="Converters\ValueConverterGroup.cs" />
     <Compile Include="Converters\VisibilityOrConverter.cs" />
     <Compile Include="Converters\VisibilityAndConverter.cs" />
+    <Compile Include="DataLayer\Command.cs" />
+    <Compile Include="DataLayer\Connection.cs" />
+    <Compile Include="DataLayer\ConnectionFactory.cs" />
+    <Compile Include="DataLayer\Context\AmbientContext.cs" />
+    <Compile Include="DataLayer\DatabaseBase.cs" />
+    <Compile Include="DataLayer\DatabaseConfiguration.cs" />
+    <Compile Include="DataLayer\DatabaseProvider.cs" />
+    <Compile Include="DataLayer\DataReader.cs" />
+    <Compile Include="DataLayer\Errors\NotFoundException.cs" />
+    <Compile Include="DataLayer\Migrations\10.4\00_CreateDatabaseInformationTable.cs" />
+    <Compile Include="DataLayer\Migrations\MigrationBase.cs" />
+    <Compile Include="DataLayer\ProviderSpecific\Placeholders.cs" />
+    <Compile Include="DataLayer\ProviderSpecific\ProviderSpecificQueryExecutor.cs" />
+    <Compile Include="DataLayer\Tables\DatabaseInformationTable.cs" />
+    <Compile Include="DataLayer\Tables\TableBase.cs" />
+    <Compile Include="Data\ProgramData\Migrations\10.4\00_CreateSettingsTable.cs" />
+    <Compile Include="Data\ProgramData\Migrations\ProgramDataMigrationBase.cs" />
+    <Compile Include="Data\ProgramData\ProgramDatabase.cs" />
+    <Compile Include="Data\ProgramData\Tables\SettingsTable.cs" />
+    <Compile Include="Diagnostics\DiagnosticMessage.cs" />
+    <Compile Include="Diagnostics\Severity.cs" />
     <Compile Include="Execution\ExecutionContext.cs" />
     <Compile Include="Execution\ExecutionContextFactory.cs" />
     <Compile Include="Execution\IHasExecutionContext.cs" />
-    <Compile Include="UserInterface\ContentTemplateSelector.cs" />
+    <Compile Include="Services\Dialog\FileDialogOptions.cs" />
+    <Compile Include="Services\Dialog\FileFilters\FileDialogFilter.cs" />
+    <Compile Include="Services\Dialog\FileFilters\FileDialogFilterCollection.cs" />
+    <Compile Include="Services\Dialog\FileFilters\FileDialogFilters.cs" />
+    <Compile Include="Services\Dialog\FileFilters\IFileDialogFilter.cs" />
+    <Compile Include="Services\Settings\ISettingsService.cs" />
+    <Compile Include="Services\Settings\SettingsService.cs" />
+    <Compile Include="Services\Dialog\DialogService.cs" />
+    <Compile Include="Services\Dialog\IDialogService.cs" />
+    <Compile Include="UserInterface\Events\OpenTabEvent.cs" />
     <Compile Include="UserInterface\Home\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserInterface\Home\HomeViewModel.cs" />
-    <Compile Include="UserInterface\Login\LoginView.xaml.cs">
-      <DependentUpon>LoginView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserInterface\Login\LoginViewModel.cs" />
-    <Compile Include="UserInterface\Main\IMainTab.cs" />
-    <Compile Include="Services\Dialog\DialogService.cs" />
-    <Compile Include="Services\Dialog\IDialogService.cs" />
     <Compile Include="UserInterface\Logging\Log.cs" />
     <Compile Include="UserInterface\Logging\LoggingView.xaml.cs">
       <DependentUpon>LoggingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserInterface\Logging\LoggingViewModel.cs" />
+    <Compile Include="UserInterface\Login\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\Login\LoginViewModel.cs" />
+    <Compile Include="UserInterface\Main\IMainTab.cs" />
     <Compile Include="UserInterface\Main\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserInterface\Main\MainViewModel.cs" />
-    <Compile Include="Services\FileFilter\FileDialogFilter.cs" />
-    <Compile Include="Services\FileFilter\FileDialogFilterCollection.cs" />
-    <Compile Include="Services\FileFilter\FileDialogFilters.cs" />
-    <Compile Include="Services\FileFilter\IFileDialogFilter.cs" />
+    <Compile Include="UserInterface\Settings\ISettingsSectionViewModel.cs" />
+    <Compile Include="UserInterface\Settings\SettingsSectionViewModel.cs" />
     <Compile Include="UserInterface\Settings\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserInterface\Settings\SettingsViewModel.cs" />
+    <Compile Include="UserInterface\Settings\Workspace\WorkspaceSettingsView.xaml.cs">
+      <DependentUpon>WorkspaceSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\Settings\Workspace\WorkspaceSettingsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Initialization\Bootstrapper.cs" />
@@ -182,6 +241,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="gong-wpf-dragdrop">
+      <Version>2.0.0</Version>
+    </PackageReference>
     <PackageReference Include="MahApps.Metro.SimpleChildWindow">
       <Version>1.5.0</Version>
     </PackageReference>
@@ -209,43 +271,98 @@
     <PackageReference Include="PropertyChanged.Fody">
       <Version>2.5.13</Version>
     </PackageReference>
+    <PackageReference Include="System.Data.SQLite.Core">
+      <Version>1.0.110</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\BusyIndicator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Theming\Button.xaml">
+    <Page Include="Controls\DualView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Theming\Styles.xaml">
+    <Page Include="Controls\FilePicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Theming\TextBlock.xaml">
+    <Page Include="Controls\LabeledTextBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\LabeledTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\RequestField\RequestFieldView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Colors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\DiagnosticMessage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\HelpView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\LabeledControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Separator.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\TextBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Theme.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserInterface\Home\HomeView.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserInterface\Logging\LoggingView.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserInterface\Login\LoginView.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserInterface\Main\MainView.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserInterface\Settings\SettingsView.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserInterface\Settings\Workspace\WorkspaceSettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

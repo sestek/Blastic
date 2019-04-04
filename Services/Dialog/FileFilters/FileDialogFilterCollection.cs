@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace WpfTemplate.Services.FileFilter
+namespace WpfTemplate.Services.Dialog.FileFilters
 {
 	public class FileDialogFilterCollection : List<FileDialogFilter>, IFileDialogFilter
 	{

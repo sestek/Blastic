@@ -18,6 +18,7 @@ namespace WpfTemplate.Execution
 
 		public IDialogService DialogService { get; }
 		public IWindowManager WindowManager { get; }
+		public IEventAggregator EventAggregator { get; }
 		public ISnackbarMessageQueue MessageQueue { get; }
 
 		public bool IsBusy { get; set; }
@@ -28,10 +29,12 @@ namespace WpfTemplate.Execution
 			ILogger<ExecutionContext> logger,
 			IDialogService dialogService,
 			IWindowManager windowManager,
+			IEventAggregator eventAggregator,
 			ISnackbarMessageQueue messageQueue)
 		{
 			DialogService = dialogService;
 			WindowManager = windowManager;
+			EventAggregator = eventAggregator;
 			MessageQueue = messageQueue;
 			_logger = logger;
 
@@ -40,14 +43,18 @@ namespace WpfTemplate.Execution
 
 		public async Task Execute(
 			Func<CancellationToken, Task> function,
-			string progressMessage,
-			string successMessage = "Operation succeeded.",
-			string failMessage = "Operation failed.")
+			string progressMessage = "",
+			string successMessage = "",
+			string failMessage = "",
+			bool showProgress = true)
 		{
 			try
 			{
-				IsBusy = true;
-				ProgressMessage = progressMessage;
+				if (showProgress)
+				{
+					IsBusy = true;
+					ProgressMessage = progressMessage;
+				}
 
 				if (CancellationTokenSource.IsCancellationRequested)
 				{
@@ -67,7 +74,7 @@ namespace WpfTemplate.Execution
 			}
 			catch (Exception exception)
 			{
-				_logger.LogError(exception, failMessage);
+				_logger.LogError(exception, "");
 
 				if (!string.IsNullOrEmpty(failMessage))
 				{
@@ -76,7 +83,10 @@ namespace WpfTemplate.Execution
 			}
 			finally
 			{
-				IsBusy = false;
+				if (showProgress)
+				{
+					IsBusy = false;
+				}
 			}
 		}
 	}

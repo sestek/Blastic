@@ -3,7 +3,6 @@ using System.Windows;
 using Autofac;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
-using WpfTemplate.Services.FileFilter;
 
 namespace WpfTemplate.Services.Dialog
 {
@@ -14,18 +13,24 @@ namespace WpfTemplate.Services.Dialog
 		{
 			Window dialog = (Window) Activator.CreateInstance(typeof(T));
 			dialog.DataContext = viewModel;
+
 			return dialog.ShowDialog();
 		}
 
-		public string ShowOpenFileDialog(IFileDialogFilter filter)
+		public string ShowOpenFileDialog(FileDialogOptions options)
 		{
 			OpenFileDialog openFileDialog = new OpenFileDialog
 			{
-				Filter = filter.GetFileDialogRepresentation(),
-				Multiselect = false
+				Filter = options?.Filter?.GetFileDialogRepresentation() ?? "",
+				Multiselect = options?.IsMultiSelect ?? false,
+				InitialDirectory = options?.InitialDirectory ?? ""
 			};
 
-			if (openFileDialog.ShowDialog() == true)
+			bool? result = options?.Owner == null
+				? openFileDialog.ShowDialog()
+				: openFileDialog.ShowDialog(options.Owner);
+
+			if (result == true)
 			{
 				return openFileDialog.FileName;
 			}
@@ -33,15 +38,20 @@ namespace WpfTemplate.Services.Dialog
 			return "";
 		}
 
-		public string ShowSaveFileDialog(IFileDialogFilter filter)
+		public string ShowSaveFileDialog(FileDialogOptions options)
 		{
 			SaveFileDialog saveFileDialog = new SaveFileDialog
 			{
-				Filter = filter.GetFileDialogRepresentation(),
+				Filter = options?.Filter?.GetFileDialogRepresentation() ?? "",
+				InitialDirectory = options?.InitialDirectory ?? "",
 				AddExtension = true
 			};
 
-			if (saveFileDialog.ShowDialog() == true)
+			bool? result = options?.Owner == null
+				? saveFileDialog.ShowDialog()
+				: saveFileDialog.ShowDialog(options.Owner);
+
+			if (result == true)
 			{
 				return saveFileDialog.FileName;
 			}
@@ -49,14 +59,19 @@ namespace WpfTemplate.Services.Dialog
 			return "";
 		}
 
-		public string ShowSelectFolderDialog()
+		public string ShowSelectFolderDialog(FileDialogOptions options)
 		{
 			CommonFileDialog folderBrowserDialog = new CommonOpenFileDialog
 			{
-				IsFolderPicker = true
+				IsFolderPicker = true,
+				InitialDirectory = options?.InitialDirectory ?? ""
 			};
 
-			if (folderBrowserDialog.ShowDialog() == CommonFileDialogResult.Ok)
+			CommonFileDialogResult result = options?.Owner == null
+				? folderBrowserDialog.ShowDialog()
+				: folderBrowserDialog.ShowDialog(options.Owner);
+
+			if (result == CommonFileDialogResult.Ok)
 			{
 				return folderBrowserDialog.FileName;
 			}

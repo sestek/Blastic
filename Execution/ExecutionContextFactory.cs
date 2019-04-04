@@ -12,17 +12,20 @@ namespace WpfTemplate.Execution
 		private readonly ILogger<ExecutionContext> _logger;
 		private readonly IDialogService _dialogService;
 		private readonly IWindowManager _windowManager;
+		private readonly IEventAggregator _eventAggregator;
 		private readonly ISnackbarMessageQueue _messageQueue;
 
 		public ExecutionContextFactory(
 			ILogger<ExecutionContext> logger,
 			IDialogService dialogService,
 			IWindowManager windowManager,
+			IEventAggregator eventAggregator,
 			ISnackbarMessageQueue messageQueue)
 		{
 			_logger = logger;
 			_dialogService = dialogService;
 			_windowManager = windowManager;
+			_eventAggregator = eventAggregator;
 			_messageQueue = messageQueue;
 		}
 
@@ -32,6 +35,7 @@ namespace WpfTemplate.Execution
 				_logger,
 				_dialogService,
 				_windowManager,
+				_eventAggregator,
 				_messageQueue);
 		}
 	}

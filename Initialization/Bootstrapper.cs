@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using WpfTemplate.Caliburn;
+using WpfTemplate.DataLayer;
 using WpfTemplate.UserInterface.Main;
 
 namespace WpfTemplate.Initialization
@@ -21,12 +22,6 @@ namespace WpfTemplate.Initialization
 		protected override void Configure()
 		{
 			CaliburnMicroInitializer.Initialize();
-
-			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-			configurationBuilder.AddInMemoryCollection(new Dictionary<string, string>
-			{
-				{ "DatabaseProvider", "SQLite" }
-			});
 
 			ServiceCollection serviceCollection = new ServiceCollection();
 			serviceCollection
@@ -40,8 +35,24 @@ namespace WpfTemplate.Initialization
 					});
 				});
 
+			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+			configurationBuilder.AddInMemoryCollection(new Dictionary<string, string>
+			{
+				{ "DatabaseProvider", "SQLite" },
+				{ "ConnectionString", "Data Source=Settings.sqlite;" }
+			});
+
+			IConfiguration configuration = configurationBuilder.Build();
+
+			DatabaseProvider databaseProvider = (DatabaseProvider) Enum.Parse(typeof(DatabaseProvider), configuration["DatabaseProvider"]);
+			string connectionString = configuration["ConnectionString"];
+
+			DatabaseConfiguration databaseConfiguration = new DatabaseConfiguration(databaseProvider, connectionString);
+
 			ContainerBuilder containerBuilder = new ContainerBuilder();
-			
+
+			containerBuilder.RegisterInstance(configuration);
+			containerBuilder.RegisterInstance(databaseConfiguration);
 			containerBuilder.RegisterType<WindowManager>().As<IWindowManager>();
 			containerBuilder.RegisterType<EventAggregator>().As<IEventAggregator>();
 			containerBuilder.RegisterType<SnackbarMessageQueue>().As<ISnackbarMessageQueue>();

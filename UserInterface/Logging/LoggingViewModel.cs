@@ -45,7 +45,7 @@ namespace WpfTemplate.UserInterface.Logging
 
 			MinimumLogLevel = LogLevel.Debug;
 
-			Layout = "${longdate} | ${level:padding=-5} | ${logger} | ${message} ${exception:format=tostring}";
+			Layout = "${longdate} | ${level:padding=-5} | ${logger} | ${message} ${exception:format=Message}";
 		}
 
 		public void Show()

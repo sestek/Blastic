@@ -1,4 +1,4 @@
-namespace WpfTemplate.Services.FileFilter
+namespace WpfTemplate.Services.Dialog.FileFilters
 {
 	public class FileDialogFilters
 	{
