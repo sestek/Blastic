@@ -2,7 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
-using TriggerBase = System.Windows.Interactivity.TriggerBase;
+using TriggerBase = Microsoft.Xaml.Behaviors.TriggerBase;
 
 namespace WpfTemplate.Caliburn
 {

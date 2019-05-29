@@ -38,43 +38,45 @@ namespace WpfTemplate.UserInterface.Main
 			Items.AddRange(mainTabs.OrderBy(x => x.Order));
 			ActiveItem = Items.FirstOrDefault();
 
-			ExecutionContext.EventAggregator.Subscribe(this);
+			ExecutionContext.EventAggregator.SubscribeOnPublishedThread(this);
 		}
 
-		protected override async void OnInitialize()
+		protected override async Task OnActivateAsync(CancellationToken cancellationToken)
 		{
-			async Task Migrate(CancellationToken cancellationToken)
+			async Task Migrate(CancellationToken token)
 			{
-				await _database.MigrateAsync(cancellationToken);
+				await _database.MigrateAsync(token);
 			}
 
-			async Task ReadSettings(CancellationToken cancellationToken)
+			async Task ReadSettings(CancellationToken token)
 			{
-				await _settingsViewModel.ReadSettings();
+				await _settingsViewModel.ReadSettings(cancellationToken);
 			}
 
 			await ExecutionContext.Execute(
 				Migrate,
 				"Migrating database...",
-				failMessage: "Cannot migrate database. Program might behave incorrectly.");
+				failMessage: "Cannot migrate database. Program might behave incorrectly.",
+				customCancellationToken: cancellationToken);
 
 			await ExecutionContext.Execute(
 				ReadSettings,
 				"Reading settings...",
-				failMessage: "Cannot read settings. Program might behave incorrectly.");
+				failMessage: "Cannot read settings. Program might behave incorrectly.",
+				customCancellationToken: cancellationToken);
 		}
 
-		public void ShowLogs()
+		public async Task ShowLogs()
 		{
-			_loggingViewModel.Show();
+			await _loggingViewModel.Show();
 		}
 
-		public void ShowSettings()
+		public async Task ShowSettings()
 		{
-			_settingsViewModel.Show();
+			await _settingsViewModel.Show();
 		}
-
-		public void Handle(OpenTabEvent message)
+		
+		public async Task HandleAsync(OpenTabEvent message, CancellationToken cancellationToken)
 		{
 			object tab = message.ViewModel;
 
@@ -82,8 +84,8 @@ namespace WpfTemplate.UserInterface.Main
 			{
 				Items.Add(tab);
 			}
-			
-			ActivateItem(tab);
+
+			await ActivateItemAsync(tab, cancellationToken);
 		}
 	}
 }

@@ -36,25 +36,25 @@ namespace WpfTemplate.UserInterface.Settings
 			DisplayName = "Settings";
 		}
 
-		protected override async void OnActivate()
+		protected override async Task OnActivateAsync(CancellationToken cancellationToken)
 		{
-			await ReadSettings();
+			await ReadSettings(cancellationToken);
 		}
-
-		public async Task ReadSettings()
+		
+		public async Task ReadSettings(CancellationToken cancellationToken)
 		{
-			async Task ReadSettings(CancellationToken cancellationToken)
+			async Task ReadSettings(CancellationToken token)
 			{
 				foreach (ISettingsSectionViewModel item in Items)
 				{
-					await item.ReadSettings(cancellationToken);
+					await item.ReadSettings(token);
 				}
 			}
 
-			await ExecutionContext.Execute(ReadSettings);
+			await ExecutionContext.Execute(ReadSettings, customCancellationToken: cancellationToken);
 		}
 
-		public async void Save()
+		public async Task Save()
 		{
 			DiagnosticMessages.Clear();
 
@@ -80,7 +80,7 @@ namespace WpfTemplate.UserInterface.Settings
 
 			await ExecutionContext.Execute(Save);
 
-			TryClose();
+			await TryCloseAsync();
 		}
 
 		private void ShowDiagnosticMessages()
@@ -93,12 +93,12 @@ namespace WpfTemplate.UserInterface.Settings
 			IsDiagnosticMessagesVisible = false;
 		}
 
-		public void Cancel()
+		public async Task Cancel()
 		{
-			TryClose();
+			await TryCloseAsync();
 		}
 
-		public void Show()
+		public async Task Show()
 		{
 			if (_activeWindow != null && PresentationSource.FromVisual(_activeWindow) != null)
 			{
@@ -109,7 +109,7 @@ namespace WpfTemplate.UserInterface.Settings
 			dynamic settings = new ExpandoObject();
 			settings.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-			ExecutionContext.WindowManager.ShowWindow(this, null, settings);
+			await ExecutionContext.WindowManager.ShowWindowAsync(this, null, settings);
 		}
 
 		protected override void OnViewAttached(object view, object context)

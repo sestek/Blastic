@@ -46,7 +46,8 @@ namespace WpfTemplate.Execution
 			string progressMessage = "",
 			string successMessage = "",
 			string failMessage = "",
-			bool showProgress = true)
+			bool showProgress = true,
+			CancellationToken? customCancellationToken = null)
 		{
 			try
 			{
@@ -62,7 +63,9 @@ namespace WpfTemplate.Execution
 					CancellationTokenSource = new CancellationTokenSource();
 				}
 
-				await function(CancellationTokenSource.Token);
+				CancellationToken cancellationToken = customCancellationToken ?? CancellationTokenSource.Token;
+
+				await function(cancellationToken);
 
 				if (!string.IsNullOrEmpty(successMessage))
 				{

@@ -1,9 +1,9 @@
-using Caliburn.Micro;
+using WpfTemplate.Caliburn.Reactive;
 using WpfTemplate.Execution;
 
 namespace WpfTemplate.Caliburn
 {
-	public class ConductorOneActiveBase<T> : Conductor<T>.Collection.OneActive, IHasExecutionContext where T : class 
+	public class ConductorOneActiveBase<T> : ReactiveConductor<T>.Collection.OneActive, IHasExecutionContext where T : class 
 	{
 		public ExecutionContextFactory ExecutionContextFactory { get; }
 		public ExecutionContext ExecutionContext { get; }

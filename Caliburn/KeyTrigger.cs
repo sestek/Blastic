@@ -1,8 +1,8 @@
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Interactivity;
 using Bindables;
+using Microsoft.Xaml.Behaviors;
 
 namespace WpfTemplate.Caliburn
 {

@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Dynamic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using Autofac;
@@ -48,7 +49,7 @@ namespace WpfTemplate.UserInterface.Logging
 			Layout = "${longdate} | ${level:padding=-5} | ${logger} | ${message} ${exception:format=Message}";
 		}
 
-		public void Show()
+		public async Task Show()
 		{
 			if (_activeWindow != null && PresentationSource.FromVisual(_activeWindow) != null)
 			{
@@ -59,7 +60,7 @@ namespace WpfTemplate.UserInterface.Logging
 			dynamic settings = new ExpandoObject();
 			settings.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-			_windowManager.ShowWindow(this, null, settings);
+			await _windowManager.ShowWindowAsync(this, null, settings);
 		}
 
 		public void Clear()

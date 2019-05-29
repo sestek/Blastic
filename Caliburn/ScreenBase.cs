@@ -1,9 +1,9 @@
-using Caliburn.Micro;
+using WpfTemplate.Caliburn.Reactive;
 using WpfTemplate.Execution;
 
 namespace WpfTemplate.Caliburn
 {
-	public class ScreenBase : Screen, IHasExecutionContext
+	public class ScreenBase : ReactiveScreen, IHasExecutionContext
 	{
 		public ExecutionContext ExecutionContext { get; }
 		public ExecutionContextFactory ExecutionContextFactory { get; }
