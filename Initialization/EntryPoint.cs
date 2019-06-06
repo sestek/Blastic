@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Threading;
-using Microsoft.Extensions.Logging;
-using NLog;
-using NLog.Extensions.Logging;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
+using Microsoft.Extensions.Configuration;
+using Serilog;
 
 namespace WpfTemplate.Initialization
 {
@@ -21,22 +19,27 @@ namespace WpfTemplate.Initialization
 
 		private static void StartApplication()
 		{
+			IConfiguration configuration = new ConfigurationBuilder()
+				.AddJsonFile("AppSettings.json")
+				.Build();
+
+			Log.Logger = new LoggerConfiguration()
+				.ReadFrom.Configuration(configuration)
+				.Enrich.FromLogContext()
+				.WriteTo.File("Logs/Log.txt", rollingInterval: RollingInterval.Day)
+				.CreateLogger();
+
 			SynchronizationContext.SetSynchronizationContext(new DispatcherSynchronizationContext());
-
-			LogManager.LoadConfiguration("NLog.config");
-
-			NLogLoggerFactory loggerFactory = new NLogLoggerFactory();
-			ILogger logger = loggerFactory.CreateLogger(typeof(EntryPoint));
-
+			
 			try
 			{
 				_application = new App();
-				_bootstrapper = new Bootstrapper();
+				_bootstrapper = new Bootstrapper(configuration);
 				_bootstrapper.Initialize();
 
 				_application.DispatcherUnhandledException += (sender, args) =>
 				{
-					logger.LogError(args.Exception, "Unhandled exception.");
+					Log.Error(args.Exception, "Unhandled exception.");
 					args.Handled = true;
 				};
 
@@ -44,12 +47,8 @@ namespace WpfTemplate.Initialization
 			}
 			catch (Exception exception)
 			{
-				logger.LogError(exception, "Unhandled exception.");
+				Log.Error(exception, "Unhandled exception.");
 				throw;
-			}
-			finally
-			{
-				LogManager.Shutdown();
 			}
 		}
 	}

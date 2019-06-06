@@ -13,5 +13,6 @@ namespace WpfTemplate.UserInterface.Settings
 
 		Task Save(CancellationToken cancellationToken);
 		Task ReadSettings(CancellationToken cancellationToken);
+		void Revert();
 	}
 }

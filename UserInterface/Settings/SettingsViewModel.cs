@@ -17,6 +17,7 @@ namespace WpfTemplate.UserInterface.Settings
 	[AddINotifyPropertyChangedInterface]
 	public sealed class SettingsViewModel : ScreenBase
 	{
+		private bool _hasReadSettings;
 		private Window _activeWindow;
 
 		public IObservableCollection<ISettingsSectionViewModel> Items { get; set; }
@@ -36,22 +37,30 @@ namespace WpfTemplate.UserInterface.Settings
 			DisplayName = "Settings";
 		}
 
-		protected override async Task OnActivateAsync(CancellationToken cancellationToken)
+		protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
 		{
 			await ReadSettings(cancellationToken);
 		}
 		
 		public async Task ReadSettings(CancellationToken cancellationToken)
 		{
+			if (_hasReadSettings)
+			{
+				return;
+			}
+
 			async Task ReadSettings(CancellationToken token)
 			{
 				foreach (ISettingsSectionViewModel item in Items)
 				{
+					await ((IScreen)item).ActivateAsync(cancellationToken);
 					await item.ReadSettings(token);
 				}
 			}
 
 			await ExecutionContext.Execute(ReadSettings, customCancellationToken: cancellationToken);
+
+			_hasReadSettings = true;
 		}
 
 		public async Task Save()
@@ -96,6 +105,11 @@ namespace WpfTemplate.UserInterface.Settings
 		public async Task Cancel()
 		{
 			await TryCloseAsync();
+
+			foreach (ISettingsSectionViewModel item in Items)
+			{
+				item.Revert();
+			}
 		}
 
 		public async Task Show()

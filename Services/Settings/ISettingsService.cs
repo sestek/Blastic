@@ -7,8 +7,8 @@ namespace WpfTemplate.Services.Settings
 	{
 		Task<bool> Contains(string key, CancellationToken cancellationToken = default);
 
-		Task<string> Get(string key, CancellationToken cancellationToken = default);
-		Task Put(string key, string value, CancellationToken cancellationToken = default);
+		Task<T> Get<T>(string key, T defaultValue = default, CancellationToken cancellationToken = default);
+		Task Put<T>(string key, T value, CancellationToken cancellationToken = default);
 
 		Task Delete(string key, CancellationToken cancellationToken = default);
 	}

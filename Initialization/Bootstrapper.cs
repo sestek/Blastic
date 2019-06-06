@@ -8,7 +8,7 @@ using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NLog.Extensions.Logging;
+using Serilog;
 using WpfTemplate.Caliburn;
 using WpfTemplate.DataLayer;
 using WpfTemplate.UserInterface.Main;
@@ -17,7 +17,13 @@ namespace WpfTemplate.Initialization
 {
 	public class Bootstrapper : BootstrapperBase
 	{
+		private readonly IConfiguration _configuration;
 		private IContainer _container;
+
+		public Bootstrapper(IConfiguration configuration)
+		{
+			_configuration = configuration;
+		}
 
 		protected override void Configure()
 		{
@@ -28,30 +34,20 @@ namespace WpfTemplate.Initialization
 				.AddLogging(builder =>
 				{
 					builder.SetMinimumLevel(LogLevel.Trace);
-					builder.AddNLog(new NLogProviderOptions
-					{
-						CaptureMessageTemplates = true,
-						CaptureMessageProperties = true
-					});
+					builder.AddSerilog();
 				});
 
-			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-			configurationBuilder.AddInMemoryCollection(new Dictionary<string, string>
-			{
-				{ "DatabaseProvider", "SQLite" },
-				{ "ConnectionString", "Data Source=Settings.sqlite;" }
-			});
-
-			IConfiguration configuration = configurationBuilder.Build();
-
-			DatabaseProvider databaseProvider = (DatabaseProvider) Enum.Parse(typeof(DatabaseProvider), configuration["DatabaseProvider"]);
-			string connectionString = configuration["ConnectionString"];
+			DatabaseProvider databaseProvider = (DatabaseProvider) Enum.Parse(
+				typeof(DatabaseProvider),
+				_configuration["Application:Database:DatabaseProvider"]);
+			
+			string connectionString = _configuration["Application:Database:ConnectionString"];
 
 			DatabaseConfiguration databaseConfiguration = new DatabaseConfiguration(databaseProvider, connectionString);
 
 			ContainerBuilder containerBuilder = new ContainerBuilder();
 
-			containerBuilder.RegisterInstance(configuration);
+			containerBuilder.RegisterInstance(_configuration);
 			containerBuilder.RegisterInstance(databaseConfiguration);
 			containerBuilder.RegisterType<WindowManager>().As<IWindowManager>();
 			containerBuilder.RegisterType<EventAggregator>().As<IEventAggregator>();

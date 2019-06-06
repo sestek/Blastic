@@ -1,7 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using WpfTemplate.DataLayer;
-using WpfTemplate.DataLayer.Errors;
 using WpfTemplate.DataLayer.Tables;
 
 namespace WpfTemplate.Data.ProgramData.Tables
@@ -24,7 +23,7 @@ namespace WpfTemplate.Data.ProgramData.Tables
 				{
 					if (!reader.Read())
 					{
-						throw new NotFoundException();
+						return null;
 					}
 
 					return reader.Get<string>("Value");
@@ -94,7 +93,7 @@ namespace WpfTemplate.Data.ProgramData.Tables
 			}
 		}
 
-		private async Task Update(Connection connection, string key, string value, CancellationToken cancellationToken)
+		private async Task Update<T>(Connection connection, string key, T value, CancellationToken cancellationToken)
 		{
 			using (Command command = connection.CreateCommand())
 			{

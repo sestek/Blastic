@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
 using System.Threading.Tasks;
@@ -6,47 +7,52 @@ using System.Windows;
 using System.Windows.Data;
 using Autofac;
 using Caliburn.Micro;
-using NLog;
-using NLog.Config;
-using NLog.Targets;
 using PropertyChanged;
-using LogManager = NLog.LogManager;
+using Serilog;
+using Serilog.Core;
+using Serilog.Events;
+using WpfTemplate.UserInterface.Settings.Log;
 
 namespace WpfTemplate.UserInterface.Logging
 {
 	[SingleInstance]
 	[AddINotifyPropertyChangedInterface]
-	public sealed class LoggingViewModel : TargetWithLayout, IViewAware
+	public sealed class LoggingViewModel : ILogEventSink, IViewAware
 	{
 		private readonly IWindowManager _windowManager;
+		private readonly LogSettingsViewModel _logSettingsViewModel;
+
 		private Window _activeWindow;
 
-		public LogLevel MinimumLogLevel { get; set; }
+		public LogEventLevel MinimumLogLevel { get; set; }
 
 		public IObservableCollection<Log> Logs { get; }
-		public IObservableCollection<LogLevel> LogLevels { get; }
+		public IObservableCollection<LogEventLevel> LogLevels { get; }
 		
-		public LoggingViewModel(IWindowManager windowManager)
+		public LoggingViewModel(
+			IWindowManager windowManager,
+			LogSettingsViewModel logSettingsViewModel)
 		{
 			_windowManager = windowManager;
+			_logSettingsViewModel = logSettingsViewModel;
 
-			LogManager.Configuration.AddTarget("UserInterface", this);
-
-			LogManager.Configuration.LoggingRules.Add(new LoggingRule("*", LogLevel.Trace, this));
-			LogManager.Configuration.Reload();
+			Serilog.Log.Logger = new LoggerConfiguration()
+				.WriteTo.Logger(Serilog.Log.Logger)
+				.WriteTo.Sink(this)
+				.CreateLogger();
 
 			Logs = new BindableCollection<Log>();
-			LogLevels = new BindableCollection<LogLevel>
+			LogLevels = new BindableCollection<LogEventLevel>
 			{
-				LogLevel.Error,
-				LogLevel.Warn,
-				LogLevel.Info,
-				LogLevel.Debug
+				LogEventLevel.Fatal,
+				LogEventLevel.Error,
+				LogEventLevel.Warning,
+				LogEventLevel.Information,
+				LogEventLevel.Debug,
+				LogEventLevel.Verbose,
 			};
 
-			MinimumLogLevel = LogLevel.Debug;
-
-			Layout = "${longdate} | ${level:padding=-5} | ${logger} | ${message} ${exception:format=Message}";
+			MinimumLogLevel = LogEventLevel.Information;
 		}
 
 		public async Task Show()
@@ -68,20 +74,31 @@ namespace WpfTemplate.UserInterface.Logging
 			Logs.Clear();
 		}
 
-		protected override void Write(LogEventInfo logEvent)
+		public async void Emit(LogEvent logEvent)
 		{
-			string logMessage = Layout.Render(logEvent);
-			string[] tokens = logMessage.Split('|');
+			IReadOnlyDictionary<string, LogEventPropertyValue> properties = logEvent.Properties;
+
+			string source = "";
+
+			if (properties.TryGetValue("SourceContext", out LogEventPropertyValue sourceValue))
+			{
+				source = sourceValue.ToString();
+			}
 
 			Log log = new Log
 			{
-				Date = tokens[0],
+				Date = logEvent.Timestamp.ToString("yyyy-MM-dd HH:mm:ss.fff"),
 				Level = logEvent.Level,
-				Source = tokens[2],
-				Message = tokens[3]
+				Source = source,
+				Message = logEvent.RenderMessage()
 			};
 
 			Logs.Add(log);
+
+			if (logEvent.Level >= LogEventLevel.Error && _logSettingsViewModel.OpenWindowOnError.Value)
+			{
+				await Show();
+			}
 		}
 
 		// Will be called by Fody.

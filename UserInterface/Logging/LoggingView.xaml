@@ -8,7 +8,7 @@
 					  xmlns:logging="clr-namespace:WpfTemplate.UserInterface.Logging"
 					  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 					  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-					  xmlns:nLog="clr-namespace:NLog;assembly=NLog"
+					  xmlns:serilog="clr-namespace:Serilog.Events;assembly=Serilog"
 					  mc:Ignorable="d"
 					  Title="Logs"
 					  Width="1400"
@@ -79,27 +79,39 @@
 
 					<Style.Triggers>
 						<DataTrigger Binding="{Binding Level}"
-									 Value="{x:Static nLog:LogLevel.Error}">
+									 Value="{x:Static serilog:LogEventLevel.Fatal}">
+
+							<Setter Property="Foreground" Value="DarkRed" />
+						</DataTrigger>
+
+						<DataTrigger Binding="{Binding Level}"
+									 Value="{x:Static serilog:LogEventLevel.Error}">
 
 							<Setter Property="Foreground" Value="Red" />
 						</DataTrigger>
 
 						<DataTrigger Binding="{Binding Level}"
-									 Value="{x:Static nLog:LogLevel.Warn}">
+									 Value="{x:Static serilog:LogEventLevel.Warning}">
 
 							<Setter Property="Foreground" Value="DarkOrange" />
 						</DataTrigger>
 
 						<DataTrigger Binding="{Binding Level}"
-									 Value="{x:Static nLog:LogLevel.Info}">
+									 Value="{x:Static serilog:LogEventLevel.Information}">
 
 							<Setter Property="Foreground" Value="CornflowerBlue" />
 						</DataTrigger>
 
 						<DataTrigger Binding="{Binding Level}"
-									 Value="{x:Static nLog:LogLevel.Debug}">
+									 Value="{x:Static serilog:LogEventLevel.Debug}">
 
 							<Setter Property="Foreground" Value="Green" />
+						</DataTrigger>
+
+						<DataTrigger Binding="{Binding Level}"
+									 Value="{x:Static serilog:LogEventLevel.Verbose}">
+
+							<Setter Property="Foreground" Value="DarkGray" />
 						</DataTrigger>
 					</Style.Triggers>
 				</Style>

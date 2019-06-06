@@ -14,8 +14,7 @@ namespace WpfTemplate.Execution
 	[AddINotifyPropertyChangedInterface]
 	public class ExecutionContext
 	{
-		private readonly ILogger _logger;
-
+		public ILogger Logger { get; }
 		public IDialogService DialogService { get; }
 		public IWindowManager WindowManager { get; }
 		public IEventAggregator EventAggregator { get; }
@@ -32,11 +31,11 @@ namespace WpfTemplate.Execution
 			IEventAggregator eventAggregator,
 			ISnackbarMessageQueue messageQueue)
 		{
+			Logger = logger;
 			DialogService = dialogService;
 			WindowManager = windowManager;
 			EventAggregator = eventAggregator;
 			MessageQueue = messageQueue;
-			_logger = logger;
 
 			CancellationTokenSource = new CancellationTokenSource();
 		}
@@ -77,7 +76,7 @@ namespace WpfTemplate.Execution
 			}
 			catch (Exception exception)
 			{
-				_logger.LogError(exception, "");
+				Logger.LogError(exception, "");
 
 				if (!string.IsNullOrEmpty(failMessage))
 				{
