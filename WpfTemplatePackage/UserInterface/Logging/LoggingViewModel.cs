@@ -11,7 +11,7 @@ using PropertyChanged;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
-using WpfTemplate.UserInterface.Settings.Log;
+using WpfTemplate.UserInterface.Settings.Logging;
 
 namespace WpfTemplate.UserInterface.Logging
 {

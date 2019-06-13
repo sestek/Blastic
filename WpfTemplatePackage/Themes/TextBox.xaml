@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                    xmlns:controlzex="urn:controlzex">
+                    xmlns:controlzEx="clr-namespace:ControlzEx;assembly=MaterialDesignThemes.Wpf">
 
 	<ControlTemplate x:Key="MaterialDesignValidationErrorTemplateWithCustomValidation">
 		<ControlTemplate.Resources>
@@ -31,7 +31,7 @@
                            Text="{Binding AdornedElement.(Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, ElementName=Placeholder}"
                            UseLayoutRounding="false" />
 			</Border>
-			<controlzex:PopupEx x:Name="ValidationPopup"
+			<controlzEx:PopupEx x:Name="ValidationPopup"
                                 IsOpen="False"
                                 Placement="Bottom"
                                 PlacementTarget="{Binding ElementName=Placeholder, Mode=OneWay}"
@@ -45,7 +45,7 @@
                                Text="{Binding CurrentItem.ErrorContent}"
                                UseLayoutRounding="false" />
 				</Border>
-			</controlzex:PopupEx>
+			</controlzEx:PopupEx>
 		</StackPanel>
 		<ControlTemplate.Triggers>
 			<MultiDataTrigger>

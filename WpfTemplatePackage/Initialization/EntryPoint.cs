@@ -11,13 +11,7 @@ namespace WpfTemplate.Initialization
 		private static App _application;
 		private static Bootstrapper _bootstrapper;
 
-		[STAThread]
-		public static void Main()
-		{
-			StartApplication();
-		}
-
-		private static void StartApplication()
+		public static void StartApplication()
 		{
 			IConfiguration configuration = new ConfigurationBuilder()
 				.AddJsonFile("AppSettings.json")

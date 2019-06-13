@@ -65,7 +65,7 @@ namespace WpfTemplate.Initialization
 				return _container.Resolve(serviceType);
 			}
 
-			if (_container.IsRegisteredWithKey(key, serviceType))
+			if (!string.IsNullOrWhiteSpace(key) && _container.IsRegisteredWithKey(key, serviceType))
 			{
 				return _container.ResolveKeyed(key, serviceType);
 			}
