@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfTemplate", "WpfTemplate.csproj", "{4590E6CE-2C76-4299-B6D4-E1395A7AF8DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfTemplate", "WpfTemplate\WpfTemplate.csproj", "{4590E6CE-2C76-4299-B6D4-E1395A7AF8DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
