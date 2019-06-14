@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Windows;
 using Autofac;
 using Caliburn.Micro;
@@ -11,11 +12,16 @@ namespace Blastic.Initialization
 	{
 		private readonly IContainer _container;
 		private readonly Type _mainViewModelType;
+		private readonly IEnumerable<Assembly> _viewAssemblies;
 
-		public Bootstrapper(IContainer container, Type mainViewModelType)
+		public Bootstrapper(
+			IContainer container,
+			Type mainViewModelType,
+			IEnumerable<Assembly> viewAssemblies)
 		{
 			_container = container;
 			_mainViewModelType = mainViewModelType;
+			_viewAssemblies = viewAssemblies;
 		}
 
 		protected override void Configure()
@@ -46,6 +52,11 @@ namespace Blastic.Initialization
 		protected override void BuildUp(object instance)
 		{
 			_container.InjectProperties(instance);
+		}
+
+		protected override IEnumerable<Assembly> SelectAssemblies()
+		{
+			return _viewAssemblies;
 		}
 
 		protected override async void OnStartup(object sender, StartupEventArgs e)

@@ -23,7 +23,7 @@ namespace Blastic.Data
 			});
 		}
 
-		public static BlasticApplication AddSettings(this BlasticApplication application)
+		public static BlasticApplication AddSettingsService(this BlasticApplication application)
 		{
 			return application.Configure(builder =>
 			{

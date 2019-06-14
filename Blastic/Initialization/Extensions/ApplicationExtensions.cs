@@ -1,6 +1,9 @@
 ﻿using Autofac;
 using Blastic.Execution;
+using Blastic.Services.Dialog;
+using Blastic.UserInterface.Logging;
 using Blastic.UserInterface.Settings;
+using Blastic.UserInterface.Settings.Logging;
 using Caliburn.Micro;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,11 +14,29 @@ namespace Blastic.Initialization.Extensions
 {
 	public static class ApplicationExtensions
 	{
+		public static BlasticApplication AddLoggingWindow(this BlasticApplication application)
+		{
+			return application.Configure(x =>
+			{
+				x.RegisterType<LogSettingsViewModel>();
+				x.RegisterType<LoggingViewModel>();
+			});
+		}
+
+		public static BlasticApplication AddSettingsWindow(this BlasticApplication application)
+		{
+			return application.Configure(builder =>
+			{
+				builder
+					.RegisterType<SettingsViewModel>()
+					.SingleInstance();
+			});
+		}
+
 		internal static BlasticApplication AddDefaults(this BlasticApplication application)
 		{
 			return application
 				.AddLogging()
-				.AddSettings()
 				.AddDefaultServices();
 		}
 
@@ -31,26 +52,17 @@ namespace Blastic.Initialization.Extensions
 			});
 		}
 
-		private static BlasticApplication AddSettings(this BlasticApplication application)
-		{
-			return application.Configure(builder =>
-			{
-				builder
-					.RegisterType<SettingsViewModel>()
-					.SingleInstance();
-				
-				builder
-					.RegisterAssemblyTypes(typeof(ISettingsSectionViewModel).Assembly)
-					.AsImplementedInterfaces();
-			});
-		}
-
 		private static BlasticApplication AddDefaultServices(this BlasticApplication application)
 		{
 			return application.Configure(builder =>
 			{
 				builder
 					.RegisterType<ExecutionContextFactory>()
+					.SingleInstance();
+
+				builder
+					.RegisterType<DialogService>()
+					.As<IDialogService>()
 					.SingleInstance();
 
 				builder

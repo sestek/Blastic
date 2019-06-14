@@ -1,0 +1,91 @@
+﻿<controls:MetroWindow x:Class="Blastic.UserInterface.TabbedMain.TabbedMainView"
+					  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					  xmlns:cal="http://www.caliburnproject.org"
+					  xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+					  xmlns:converters="clr-namespace:Blastic.Converters"
+					  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+					  xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
+					  xmlns:main="clr-namespace:Blastic.UserInterface.TabbedMain"
+					  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+					  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+					  Title="{Binding DisplayName}"
+					  mc:Ignorable="d"
+					  Width="1200"
+					  Height="900"
+					  d:DataContext="{d:DesignInstance main:TabbedMainViewModel}"
+					  Style="{StaticResource WindowStyle}"
+					  WindowStartupLocation="CenterScreen">
+
+	<controls:MetroWindow.Resources>
+		<converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+	</controls:MetroWindow.Resources>
+
+	<materialDesign:DialogHost>
+		<Grid>
+			<dragablz:TabablzControl AdjacentHeaderItemOffset="10"
+									 FixedHeaderCount="{Binding FixedHeaderCount}"
+									 HeaderMemberPath="DisplayName"
+									 ItemsSource="{Binding Items}"
+									 SelectedItem="{Binding ActiveItem}"
+									 ShowDefaultAddButton="False"
+									 ShowDefaultCloseButton="True">
+
+				<dragablz:TabablzControl.InterTabController>
+					<dragablz:InterTabController />
+				</dragablz:TabablzControl.InterTabController>
+
+				<TabControl.ContentTemplate>
+					<DataTemplate>
+						<ContentControl HorizontalContentAlignment="Stretch"
+										VerticalContentAlignment="Stretch"
+										cal:View.Model="{Binding}"
+										IsTabStop="False" />
+					</DataTemplate>
+				</TabControl.ContentTemplate>
+			</dragablz:TabablzControl>
+
+			<materialDesign:ColorZone Padding="4"
+									  VerticalAlignment="Top"
+									  Mode="PrimaryMid">
+
+				<materialDesign:ColorZone.Style>
+					<Style TargetType="materialDesign:ColorZone">
+						<Style.Triggers>
+							<MultiDataTrigger>
+								<MultiDataTrigger.Conditions>
+									<Condition Binding="{Binding LoggingViewModel}" Value="{x:Null}" />
+									<Condition Binding="{Binding SettingsViewModel}" Value="{x:Null}" />
+								</MultiDataTrigger.Conditions>
+
+								<Setter Property="Visibility" Value="Collapsed" />
+							</MultiDataTrigger>
+						</Style.Triggers>
+					</Style>
+				</materialDesign:ColorZone.Style>
+
+				<StackPanel HorizontalAlignment="Right"
+							Orientation="Horizontal">
+
+					<Button Margin="8,0,0,0"
+							cal:Message.Attach="ShowLogs"
+							materialDesign:RippleAssist.IsDisabled="True"
+							Content="{materialDesign:PackIcon FileDocumentBox}"
+							Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+							Style="{StaticResource MaterialDesignToolButton}"
+							Visibility="{Binding LoggingViewModel, Converter={StaticResource NullToVisibilityConverter}}" />
+
+					<Button Margin="8,0,0,0"
+							cal:Message.Attach="ShowSettings"
+							materialDesign:RippleAssist.IsDisabled="True"
+							Content="{materialDesign:PackIcon Settings}"
+							Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+							Style="{StaticResource MaterialDesignToolButton}"
+							Visibility="{Binding SettingsViewModel, Converter={StaticResource NullToVisibilityConverter}}" />
+				</StackPanel>
+			</materialDesign:ColorZone>
+
+			<materialDesign:Snackbar MessageQueue="{Binding ExecutionContext.MessageQueue}" />
+		</Grid>
+	</materialDesign:DialogHost>
+</controls:MetroWindow>

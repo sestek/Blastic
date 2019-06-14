@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Threading;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Blastic.Initialization.Extensions;
-using Blastic.UserInterface.Logging;
-using Blastic.UserInterface.Settings.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -19,6 +19,8 @@ namespace Blastic.Initialization
 		private readonly ContainerBuilder _containerBuilder;
 		private readonly ServiceCollection _serviceCollection;
 
+		private readonly HashSet<Assembly> _viewAssemblies;
+
 		private readonly App _application;
 
 		public BlasticApplication()
@@ -26,6 +28,8 @@ namespace Blastic.Initialization
 			_configurationBuilder = new ConfigurationBuilder();
 			_containerBuilder = new ContainerBuilder();
 			_serviceCollection = new ServiceCollection();
+
+			_viewAssemblies = new HashSet<Assembly>();
 
 			_application = new App();
 
@@ -50,7 +54,13 @@ namespace Blastic.Initialization
 			return this;
 		}
 
-		public void Run<T>()
+		public BlasticApplication RegisterViewAssembly(Assembly assembly)
+		{
+			_viewAssemblies.Add(assembly);
+			return this;
+		}
+
+		public void Run<TMainViewModel>()
 		{
 			IConfiguration configuration = _configurationBuilder.Build();
 
@@ -58,15 +68,18 @@ namespace Blastic.Initialization
 				.ReadFrom.Configuration(configuration)
 				.CreateLogger();
 
+			RegisterViewAssembly(typeof(BlasticApplication).Assembly);
+
 			Configure(x => x.RegisterInstance(configuration));
-			Configure(x => x.RegisterType<LoggingViewModel>());
-			Configure(x => x.RegisterType<LogSettingsViewModel>());
-			Configure(x => x.RegisterType<T>());
+			Configure(x => x.RegisterType<TMainViewModel>());
 
 			_containerBuilder.Populate(_serviceCollection);
 			IContainer container = _containerBuilder.Build();
 
-			Bootstrapper bootstrapper = new Bootstrapper(container, typeof(T));
+			Bootstrapper bootstrapper = new Bootstrapper(
+				container,
+				typeof(TMainViewModel),
+				_viewAssemblies);
 
 			SynchronizationContext.SetSynchronizationContext(new DispatcherSynchronizationContext());
 			

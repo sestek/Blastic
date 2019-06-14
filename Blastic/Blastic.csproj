@@ -71,6 +71,7 @@
     <Compile Include="Caliburn\Reactive\WeakValueDictionary.cs" />
     <Compile Include="Caliburn\ScreenBase.cs" />
     <Compile Include="Collections\ObservableDictionary.cs" />
+    <Compile Include="Common\Order.cs" />
     <Compile Include="ControlExtensions\DataGridColumnSizeExtensions.cs" />
     <Compile Include="ControlExtensions\DataGridRowNumberBehavior.cs" />
     <Compile Include="ControlExtensions\FocusExtensions.cs" />
@@ -158,11 +159,11 @@
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserInterface\Login\LoginViewModel.cs" />
-    <Compile Include="UserInterface\Main\IMainTab.cs" />
-    <Compile Include="UserInterface\Main\MainView.xaml.cs">
-      <DependentUpon>MainView.xaml</DependentUpon>
+    <Compile Include="UserInterface\TabbedMain\IMainTab.cs" />
+    <Compile Include="UserInterface\TabbedMain\TabbedMainView.xaml.cs">
+      <DependentUpon>TabbedMainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserInterface\Main\MainViewModel.cs" />
+    <Compile Include="UserInterface\TabbedMain\TabbedMainViewModel.cs" />
     <Compile Include="UserInterface\Settings\ISettingsSectionViewModel.cs" />
     <Compile Include="UserInterface\Settings\Logging\LogSettingsView.xaml.cs">
       <DependentUpon>LogSettingsView.xaml</DependentUpon>
@@ -339,7 +340,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserInterface\Main\MainView.xaml">
+    <Page Include="UserInterface\TabbedMain\TabbedMainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

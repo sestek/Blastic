@@ -10,26 +10,34 @@ using Blastic.UserInterface.Events;
 using Blastic.UserInterface.Logging;
 using Blastic.UserInterface.Settings;
 
-namespace Blastic.UserInterface.Main
+namespace Blastic.UserInterface.TabbedMain
 {
 	[AddINotifyPropertyChangedInterface]
-	public class MainViewModel : ConductorOneActiveBase<object>, IHandle<OpenTabEvent>
+	public class TabbedMainViewModel : ConductorOneActiveBase<object>, IHandle<OpenTabEvent>
 	{
-		private readonly LoggingViewModel _loggingViewModel;
-		private readonly SettingsViewModel _settingsViewModel;
+		public LoggingViewModel LoggingViewModel { get; }
+		public SettingsViewModel SettingsViewModel { get; }
 
-		public MainViewModel(
+		public int FixedHeaderCount { get; }
+
+		public TabbedMainViewModel(
 			ExecutionContextFactory executionContextFactory,
-			LoggingViewModel loggingViewModel,
-			SettingsViewModel settingsViewModel,
-			IEnumerable<IMainTab> mainTabs)
+			IEnumerable<IMainTab> mainTabs,
+			LoggingViewModel loggingViewModel = null,
+			SettingsViewModel settingsViewModel = null)
 			:
 			base(executionContextFactory)
 		{
-			_loggingViewModel = loggingViewModel;
-			_settingsViewModel = settingsViewModel;
+			LoggingViewModel = loggingViewModel;
+			SettingsViewModel = settingsViewModel;
 
-			Items.AddRange(mainTabs.OrderBy(x => x.Order));
+			List<IMainTab> tabs = mainTabs
+				.OrderBy(x => x.Order)
+				.ToList();
+
+			FixedHeaderCount = tabs.Count(x => x.IsFixed);
+
+			Items.AddRange(tabs);
 			ActiveItem = Items.FirstOrDefault();
 
 			ExecutionContext.EventAggregator.SubscribeOnPublishedThread(this);
@@ -44,7 +52,7 @@ namespace Blastic.UserInterface.Main
 
 			async Task ReadSettings(CancellationToken token)
 			{
-				await _settingsViewModel.ReadSettings(cancellationToken);
+				await SettingsViewModel.ReadSettings(cancellationToken);
 			}
 
 			await ExecutionContext.Execute(
@@ -53,21 +61,30 @@ namespace Blastic.UserInterface.Main
 				failMessage: "Cannot migrate database. Program might behave incorrectly.",
 				customCancellationToken: cancellationToken);
 
-			await ExecutionContext.Execute(
+			if (SettingsViewModel != null)
+			{
+				await ExecutionContext.Execute(
 				ReadSettings,
 				"Reading settings...",
 				failMessage: "Cannot read settings. Program might behave incorrectly.",
 				customCancellationToken: cancellationToken);
+			}
 		}
 
 		public async Task ShowLogs()
 		{
-			await _loggingViewModel.Show();
+			if (LoggingViewModel != null)
+			{
+				await LoggingViewModel.Show();
+			}
 		}
 
 		public async Task ShowSettings()
 		{
-			await _settingsViewModel.Show();
+			if (SettingsViewModel != null)
+			{
+				await SettingsViewModel.Show();
+			}
 		}
 		
 		public async Task HandleAsync(OpenTabEvent message, CancellationToken cancellationToken)
