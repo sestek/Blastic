@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<ResourceDictionary.MergedDictionaries>
-		<ResourceDictionary Source="/BlasticPackage;component/Themes/HelpView.xaml" />
-		<ResourceDictionary Source="/BlasticPackage;component/Themes/LabeledControl.xaml" />
+		<ResourceDictionary Source="/Blastic;component/Themes/HelpView.xaml" />
+		<ResourceDictionary Source="/Blastic;component/Themes/LabeledControl.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

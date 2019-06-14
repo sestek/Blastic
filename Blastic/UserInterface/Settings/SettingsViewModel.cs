@@ -13,7 +13,6 @@ using Blastic.Execution;
 
 namespace Blastic.UserInterface.Settings
 {
-	[SingleInstance]
 	[AddINotifyPropertyChangedInterface]
 	public sealed class SettingsViewModel : ScreenBase
 	{

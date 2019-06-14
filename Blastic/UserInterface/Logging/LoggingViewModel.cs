@@ -5,7 +5,6 @@ using System.Dynamic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using Autofac;
 using Caliburn.Micro;
 using PropertyChanged;
 using Serilog;
@@ -15,7 +14,6 @@ using Blastic.UserInterface.Settings.Logging;
 
 namespace Blastic.UserInterface.Logging
 {
-	[SingleInstance]
 	[AddINotifyPropertyChangedInterface]
 	public sealed class LoggingViewModel : ILogEventSink, IViewAware
 	{

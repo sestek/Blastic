@@ -5,7 +5,7 @@
 					xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
 	<ResourceDictionary.MergedDictionaries>
-		<ResourceDictionary Source="/BlasticPackage;component/Themes/Colors.xaml" />
+		<ResourceDictionary Source="/Blastic;component/Themes/Colors.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 
 	<Style TargetType="{x:Type help:HelpView}">

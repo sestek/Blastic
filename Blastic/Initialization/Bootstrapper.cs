@@ -2,60 +2,25 @@
 using System.Collections.Generic;
 using System.Windows;
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using Caliburn.Micro;
-using MaterialDesignThemes.Wpf;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Serilog;
 using Blastic.Caliburn;
-using Blastic.DataLayer;
-using Blastic.UserInterface.Main;
 
 namespace Blastic.Initialization
 {
 	public class Bootstrapper : BootstrapperBase
 	{
-		private readonly IConfiguration _configuration;
-		private IContainer _container;
+		private readonly IContainer _container;
+		private readonly Type _mainViewModelType;
 
-		public Bootstrapper(IConfiguration configuration)
+		public Bootstrapper(IContainer container, Type mainViewModelType)
 		{
-			_configuration = configuration;
+			_container = container;
+			_mainViewModelType = mainViewModelType;
 		}
 
 		protected override void Configure()
 		{
 			CaliburnMicroInitializer.Initialize();
-
-			ServiceCollection serviceCollection = new ServiceCollection();
-			serviceCollection
-				.AddLogging(builder =>
-				{
-					builder.SetMinimumLevel(LogLevel.Trace);
-					builder.AddSerilog();
-				});
-
-			DatabaseProvider databaseProvider = (DatabaseProvider) Enum.Parse(
-				typeof(DatabaseProvider),
-				_configuration["Application:Database:DatabaseProvider"]);
-			
-			string connectionString = _configuration["Application:Database:ConnectionString"];
-
-			DatabaseConfiguration databaseConfiguration = new DatabaseConfiguration(databaseProvider, connectionString);
-
-			ContainerBuilder containerBuilder = new ContainerBuilder();
-
-			containerBuilder.RegisterInstance(_configuration);
-			containerBuilder.RegisterInstance(databaseConfiguration);
-			containerBuilder.RegisterType<WindowManager>().As<IWindowManager>();
-			containerBuilder.RegisterType<EventAggregator>().As<IEventAggregator>();
-			containerBuilder.RegisterType<SnackbarMessageQueue>().As<ISnackbarMessageQueue>();
-			containerBuilder.Populate(serviceCollection);
-			containerBuilder.RegisterByAttributes(typeof(Bootstrapper).Assembly);
-
-			_container = containerBuilder.Build();
 		}
 
 		protected override object GetInstance(Type serviceType, string key)
@@ -83,9 +48,9 @@ namespace Blastic.Initialization
 			_container.InjectProperties(instance);
 		}
 
-		protected override void OnStartup(object sender, StartupEventArgs e)
+		protected override async void OnStartup(object sender, StartupEventArgs e)
 		{
-			DisplayRootViewFor<MainViewModel>();
+			await DisplayRootViewForAsync(_mainViewModelType);
 		}
 	}
 }

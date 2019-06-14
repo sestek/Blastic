@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Windows;
-using Autofac;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace Blastic.Services.Dialog
 {
-	[SingleInstance]
 	public class DialogService : IDialogService
 	{
 		public bool? ShowDialog<T>(object viewModel) where T : Window

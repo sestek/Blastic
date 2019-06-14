@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Autofac;
 using Caliburn.Micro;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.Logging;
@@ -10,7 +9,6 @@ using Blastic.Services.Dialog;
 
 namespace Blastic.Execution
 {
-	[InstancePerDependency]
 	[AddINotifyPropertyChangedInterface]
 	public class ExecutionContext
 	{

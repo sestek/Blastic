@@ -2,11 +2,9 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Autofac;
 using Caliburn.Micro;
 using PropertyChanged;
 using Blastic.Caliburn;
-using Blastic.Data.ProgramData;
 using Blastic.Execution;
 using Blastic.UserInterface.Events;
 using Blastic.UserInterface.Logging;
@@ -14,26 +12,22 @@ using Blastic.UserInterface.Settings;
 
 namespace Blastic.UserInterface.Main
 {
-	[SingleInstance]
 	[AddINotifyPropertyChangedInterface]
 	public class MainViewModel : ConductorOneActiveBase<object>, IHandle<OpenTabEvent>
 	{
 		private readonly LoggingViewModel _loggingViewModel;
 		private readonly SettingsViewModel _settingsViewModel;
-		private readonly ProgramDatabase _database;
 
 		public MainViewModel(
 			ExecutionContextFactory executionContextFactory,
 			LoggingViewModel loggingViewModel,
 			SettingsViewModel settingsViewModel,
-			ProgramDatabase database,
 			IEnumerable<IMainTab> mainTabs)
 			:
 			base(executionContextFactory)
 		{
 			_loggingViewModel = loggingViewModel;
 			_settingsViewModel = settingsViewModel;
-			_database = database;
 
 			Items.AddRange(mainTabs.OrderBy(x => x.Order));
 			ActiveItem = Items.FirstOrDefault();
@@ -45,7 +39,7 @@ namespace Blastic.UserInterface.Main
 		{
 			async Task Migrate(CancellationToken token)
 			{
-				await _database.MigrateAsync(token);
+				//await _database.MigrateAsync(token);
 			}
 
 			async Task ReadSettings(CancellationToken token)

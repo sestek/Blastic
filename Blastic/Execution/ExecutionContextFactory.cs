@@ -1,12 +1,10 @@
-﻿using Autofac;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.Logging;
 using Blastic.Services.Dialog;
 
 namespace Blastic.Execution
 {
-	[SingleInstance]
 	public class ExecutionContextFactory
 	{
 		private readonly ILogger<ExecutionContext> _logger;

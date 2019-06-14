@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{2482D54F-3264-4DC1-9DBE-00CC325D39EF}</ProjectGuid>
     <OutputType>library</OutputType>
-    <RootNamespace>BlasticPackage</RootNamespace>
-    <AssemblyName>BlasticPackage</AssemblyName>
+    <RootNamespace>Blastic</RootNamespace>
+    <AssemblyName>Blastic</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -119,32 +119,14 @@
     <Compile Include="Converters\ValueConverterGroup.cs" />
     <Compile Include="Converters\VisibilityAndConverter.cs" />
     <Compile Include="Converters\VisibilityOrConverter.cs" />
-    <Compile Include="DataLayer\Command.cs" />
-    <Compile Include="DataLayer\Connection.cs" />
-    <Compile Include="DataLayer\ConnectionFactory.cs" />
-    <Compile Include="DataLayer\Context\AmbientContext.cs" />
-    <Compile Include="DataLayer\DatabaseBase.cs" />
-    <Compile Include="DataLayer\DatabaseConfiguration.cs" />
-    <Compile Include="DataLayer\DatabaseProvider.cs" />
-    <Compile Include="DataLayer\DataReader.cs" />
-    <Compile Include="DataLayer\Errors\NotFoundException.cs" />
-    <Compile Include="DataLayer\Migrations\10.4\00_CreateDatabaseInformationTable.cs" />
-    <Compile Include="DataLayer\Migrations\MigrationBase.cs" />
-    <Compile Include="DataLayer\ProviderSpecific\Placeholders.cs" />
-    <Compile Include="DataLayer\ProviderSpecific\ProviderSpecificQueryExecutor.cs" />
-    <Compile Include="DataLayer\Tables\DatabaseInformationTable.cs" />
-    <Compile Include="DataLayer\Tables\TableBase.cs" />
-    <Compile Include="Data\ProgramData\Migrations\0.0\00_CreateSettingsTable.cs" />
-    <Compile Include="Data\ProgramData\Migrations\ProgramDataMigrationBase.cs" />
-    <Compile Include="Data\ProgramData\ProgramDatabase.cs" />
-    <Compile Include="Data\ProgramData\Tables\SettingsTable.cs" />
     <Compile Include="Diagnostics\DiagnosticMessage.cs" />
     <Compile Include="Diagnostics\Severity.cs" />
     <Compile Include="Execution\ExecutionContext.cs" />
     <Compile Include="Execution\ExecutionContextFactory.cs" />
     <Compile Include="Execution\IHasExecutionContext.cs" />
     <Compile Include="Initialization\Bootstrapper.cs" />
-    <Compile Include="Initialization\EntryPoint.cs" />
+    <Compile Include="Initialization\BlasticApplication.cs" />
+    <Compile Include="Initialization\Extensions\ApplicationExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -166,12 +148,7 @@
     <Compile Include="Services\Dialog\FileFilters\IFileDialogFilter.cs" />
     <Compile Include="Services\Dialog\IDialogService.cs" />
     <Compile Include="Services\Settings\ISettingsService.cs" />
-    <Compile Include="Services\Settings\SettingsService.cs" />
     <Compile Include="UserInterface\Events\OpenTabEvent.cs" />
-    <Compile Include="UserInterface\Home\HomeView.xaml.cs">
-      <DependentUpon>HomeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserInterface\Home\HomeViewModel.cs" />
     <Compile Include="UserInterface\Logging\Log.cs" />
     <Compile Include="UserInterface\Logging\LoggingView.xaml.cs">
       <DependentUpon>LoggingView.xaml</DependentUpon>
@@ -210,9 +187,6 @@
   <ItemGroup>
     <PackageReference Include="Autofac">
       <Version>4.9.2</Version>
-    </PackageReference>
-    <PackageReference Include="Autofac.AttributeRegistration">
-      <Version>1.0.0</Version>
     </PackageReference>
     <PackageReference Include="Autofac.Extensions.DependencyInjection">
       <Version>4.4.0</Version>
@@ -287,10 +261,6 @@
     <PackageReference Include="Serilog.Sinks.File">
       <Version>4.0.0</Version>
     </PackageReference>
-    <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.110</Version>
-      <PrivateAssets>none</PrivateAssets>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="App.xaml">
@@ -361,10 +331,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
-    <Page Include="UserInterface\Home\HomeView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="UserInterface\Logging\LoggingView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

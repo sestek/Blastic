@@ -40,27 +40,28 @@
 				</TabControl.ContentTemplate>
 			</dragablz:TabablzControl>
 
-			<Grid Margin="0,4,8,0"
-				  VerticalAlignment="Top">
+			<materialDesign:ColorZone VerticalAlignment="Top"
+			                          Mode="PrimaryMid"
+			                          Padding="4">
 
 				<StackPanel HorizontalAlignment="Right"
-							Orientation="Horizontal">
+				            Orientation="Horizontal">
 
 					<Button Margin="8,0,0,0"
-							cal:Message.Attach="ShowLogs"
-							materialDesign:RippleAssist.IsDisabled="True"
-							Content="{materialDesign:PackIcon FileDocumentBox}"
-							Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
-							Style="{StaticResource MaterialDesignToolButton}" />
+					        cal:Message.Attach="ShowLogs"
+					        materialDesign:RippleAssist.IsDisabled="True"
+					        Content="{materialDesign:PackIcon FileDocumentBox}"
+					        Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+					        Style="{StaticResource MaterialDesignToolButton}" />
 
 					<Button Margin="8,0,0,0"
-							cal:Message.Attach="ShowSettings"
-							materialDesign:RippleAssist.IsDisabled="True"
-							Content="{materialDesign:PackIcon Settings}"
-							Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
-							Style="{StaticResource MaterialDesignToolButton}" />
+					        cal:Message.Attach="ShowSettings"
+					        materialDesign:RippleAssist.IsDisabled="True"
+					        Content="{materialDesign:PackIcon Settings}"
+					        Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+					        Style="{StaticResource MaterialDesignToolButton}" />
 				</StackPanel>
-			</Grid>
+			</materialDesign:ColorZone>
 
 			<materialDesign:Snackbar MessageQueue="{Binding ExecutionContext.MessageQueue}" />
 		</Grid>

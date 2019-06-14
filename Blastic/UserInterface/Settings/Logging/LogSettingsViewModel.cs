@@ -1,11 +1,9 @@
-﻿using Autofac;
-using PropertyChanged;
+﻿using PropertyChanged;
 using Blastic.Execution;
 using Blastic.Services.Settings;
 
 namespace Blastic.UserInterface.Settings.Logging
 {
-	[SingleInstance(AsImplementedInterface = true)]
 	[AddINotifyPropertyChangedInterface]
 	public class LogSettingsViewModel : SettingsSectionViewModel
 	{
