@@ -6,8 +6,9 @@ using Caliburn.Micro;
 using PropertyChanged;
 using Blastic.Caliburn;
 using Blastic.Execution;
+using Blastic.Initialization.Steps;
 using Blastic.UserInterface.Events;
-using Blastic.UserInterface.Logging;
+using Blastic.UserInterface.Logs;
 using Blastic.UserInterface.Settings;
 
 namespace Blastic.UserInterface.TabbedMain
@@ -15,7 +16,9 @@ namespace Blastic.UserInterface.TabbedMain
 	[AddINotifyPropertyChangedInterface]
 	public class TabbedMainViewModel : ConductorOneActiveBase<object>, IHandle<OpenTabEvent>
 	{
-		public LoggingViewModel LoggingViewModel { get; }
+		private readonly List<IInitializationStep> _initializationSteps;
+
+		public LogsViewModel LogsViewModel { get; }
 		public SettingsViewModel SettingsViewModel { get; }
 
 		public int FixedHeaderCount { get; }
@@ -23,13 +26,18 @@ namespace Blastic.UserInterface.TabbedMain
 		public TabbedMainViewModel(
 			ExecutionContextFactory executionContextFactory,
 			IEnumerable<IMainTab> mainTabs,
-			LoggingViewModel loggingViewModel = null,
+			IEnumerable<IInitializationStep> initializationSteps,
+			LogsViewModel logsViewModel = null,
 			SettingsViewModel settingsViewModel = null)
 			:
 			base(executionContextFactory)
 		{
-			LoggingViewModel = loggingViewModel;
+			LogsViewModel = logsViewModel;
 			SettingsViewModel = settingsViewModel;
+
+			_initializationSteps = initializationSteps
+				.OrderBy(x => x.Order)
+				.ToList();
 
 			List<IMainTab> tabs = mainTabs
 				.OrderBy(x => x.Order)
@@ -45,37 +53,23 @@ namespace Blastic.UserInterface.TabbedMain
 
 		protected override async Task OnActivateAsync(CancellationToken cancellationToken)
 		{
-			async Task Migrate(CancellationToken token)
-			{
-				//await _database.MigrateAsync(token);
-			}
-
-			async Task ReadSettings(CancellationToken token)
-			{
-				await SettingsViewModel.ReadSettings(cancellationToken);
-			}
-
-			await ExecutionContext.Execute(
-				Migrate,
-				"Migrating database...",
-				failMessage: "Cannot migrate database. Program might behave incorrectly.",
-				customCancellationToken: cancellationToken);
-
-			if (SettingsViewModel != null)
+			foreach (IInitializationStep initializationStep in _initializationSteps)
 			{
 				await ExecutionContext.Execute(
-				ReadSettings,
-				"Reading settings...",
-				failMessage: "Cannot read settings. Program might behave incorrectly.",
-				customCancellationToken: cancellationToken);
+					initializationStep.Initialize,
+					initializationStep.Description,
+					initializationStep.SuccessMessage,
+					initializationStep.FailureMessage,
+					initializationStep.ShowBusyIndicator,
+					cancellationToken);
 			}
 		}
 
 		public async Task ShowLogs()
 		{
-			if (LoggingViewModel != null)
+			if (LogsViewModel != null)
 			{
-				await LoggingViewModel.Show();
+				await LogsViewModel.Show();
 			}
 		}
 

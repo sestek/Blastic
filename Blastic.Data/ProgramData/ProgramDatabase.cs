@@ -10,9 +10,9 @@ namespace Blastic.Data.ProgramData
 
 		public ProgramDatabase(
 			ConnectionFactory connectionFactory,
-			ILoggerFactory loggerFactory)
+			ILogger<ProgramDatabase> logger)
 			:
-			base(connectionFactory, loggerFactory)
+			base(connectionFactory, logger)
 		{
 			SettingsTable = new SettingsTable(connectionFactory);
 		}

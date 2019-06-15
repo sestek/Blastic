@@ -1,9 +1,11 @@
 ﻿using Autofac;
 using Blastic.Execution;
+using Blastic.Initialization.Steps;
 using Blastic.Services.Dialog;
-using Blastic.UserInterface.Logging;
+using Blastic.UserInterface.Logs;
 using Blastic.UserInterface.Settings;
 using Blastic.UserInterface.Settings.Logging;
+using Blastic.UserInterface.TabbedMain;
 using Caliburn.Micro;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,12 +16,33 @@ namespace Blastic.Initialization.Extensions
 {
 	public static class ApplicationExtensions
 	{
-		public static BlasticApplication AddLoggingWindow(this BlasticApplication application)
+		public static BlasticApplication RegisterMainTab<T>(this BlasticApplication application) where T : IMainTab
 		{
-			return application.Configure(x =>
+			return application.Configure(builder =>
 			{
-				x.RegisterType<LogSettingsViewModel>();
-				x.RegisterType<LoggingViewModel>();
+				builder.RegisterType<T>()
+					.SingleInstance()
+					.As<IMainTab>();
+			});
+		}
+
+		public static BlasticApplication AddLogsWindow(this BlasticApplication application)
+		{
+			return application.Configure(builder =>
+			{
+				builder
+					.RegisterType<LogsViewModel>()
+					.SingleInstance();
+
+				builder
+					.RegisterType<LogSink>()
+					.SingleInstance();
+
+				builder
+					.RegisterType<LogSettingsViewModel>()
+					.SingleInstance()
+					.AsImplementedInterfaces()
+					.AsSelf();
 			});
 		}
 
@@ -30,6 +53,10 @@ namespace Blastic.Initialization.Extensions
 				builder
 					.RegisterType<SettingsViewModel>()
 					.SingleInstance();
+
+				builder.RegisterType<ReadSettingsStep>()
+					.SingleInstance()
+					.As<IInitializationStep>();
 			});
 		}
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using Autofac;
 using Blastic.Data;
 using Blastic.Initialization;
 using Blastic.Initialization.Extensions;
@@ -15,18 +14,13 @@ namespace Blastic.Sample
 		public static void Main()
 		{
 			new BlasticApplication()
-				.AddProgramDatabase(DatabaseProvider.SQLite, "Data Source=Settings.sqlite;")
-				.AddSettingsService()
-				.RegisterViewAssembly(typeof(Program).Assembly)
 				.Configure(x => x.AddJsonFile("AppSettings.json"))
-				.Configure(builder =>
-				{
-					builder
-						.RegisterType<HomeViewModel>()
-						.SingleInstance()
-						.As<IMainTab>();
-				})
+				.RegisterViewAssembly<Program>()
+				.RegisterMainTab<HomeViewModel>()
+				.AddLogsWindow()
 				.AddSettingsWindow()
+				.AddSettingsService()
+				.AddProgramDatabase(DatabaseProvider.SQLite, "Data Source=Settings.sqlite;")
 				.Run<TabbedMainViewModel>();
 		}
 	}

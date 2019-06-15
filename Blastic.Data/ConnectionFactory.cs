@@ -20,10 +20,10 @@ namespace Blastic.Data
 			AmbientConnectionsTable = new ConditionalWeakTable<Transaction, Tuple<DbConnection, DbTransaction>>();
 		}
 
-		public ConnectionFactory(DatabaseConfiguration databaseConfiguration, ILoggerFactory loggerFactory)
+		public ConnectionFactory(DatabaseConfiguration databaseConfiguration, ILogger<ConnectionFactory> logger)
 		{
 			_databaseConfiguration = databaseConfiguration;
-			_logger = loggerFactory.CreateLogger<Connection>();
+			_logger = logger;
 		}
 
 		internal (DbConnection connection, DbTransaction transaction) CreateDbConnection()

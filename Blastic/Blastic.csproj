@@ -128,6 +128,8 @@
     <Compile Include="Initialization\Bootstrapper.cs" />
     <Compile Include="Initialization\BlasticApplication.cs" />
     <Compile Include="Initialization\Extensions\ApplicationExtensions.cs" />
+    <Compile Include="Initialization\Steps\IInitializationStep.cs" />
+    <Compile Include="Initialization\Steps\ReadSettingsStep.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -150,11 +152,12 @@
     <Compile Include="Services\Dialog\IDialogService.cs" />
     <Compile Include="Services\Settings\ISettingsService.cs" />
     <Compile Include="UserInterface\Events\OpenTabEvent.cs" />
-    <Compile Include="UserInterface\Logging\Log.cs" />
-    <Compile Include="UserInterface\Logging\LoggingView.xaml.cs">
-      <DependentUpon>LoggingView.xaml</DependentUpon>
+    <Compile Include="UserInterface\Logs\Log.cs" />
+    <Compile Include="UserInterface\Logs\LogSink.cs" />
+    <Compile Include="UserInterface\Logs\LogsView.xaml.cs">
+      <DependentUpon>LogsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserInterface\Logging\LoggingViewModel.cs" />
+    <Compile Include="UserInterface\Logs\LogsViewModel.cs" />
     <Compile Include="UserInterface\Login\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -332,7 +335,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
-    <Page Include="UserInterface\Logging\LoggingView.xaml">
+    <Page Include="UserInterface\Logs\LogsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

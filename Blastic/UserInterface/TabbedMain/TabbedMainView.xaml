@@ -45,26 +45,25 @@
 				</TabControl.ContentTemplate>
 			</dragablz:TabablzControl>
 
-			<materialDesign:ColorZone Padding="4"
-									  VerticalAlignment="Top"
-									  Mode="PrimaryMid">
+			<Grid VerticalAlignment="Top">
+				<materialDesign:ColorZone VerticalAlignment="Stretch"
+										  Mode="PrimaryMid">
 
-				<materialDesign:ColorZone.Style>
-					<Style TargetType="materialDesign:ColorZone">
-						<Style.Triggers>
-							<MultiDataTrigger>
-								<MultiDataTrigger.Conditions>
-									<Condition Binding="{Binding LoggingViewModel}" Value="{x:Null}" />
-									<Condition Binding="{Binding SettingsViewModel}" Value="{x:Null}" />
-								</MultiDataTrigger.Conditions>
+					<materialDesign:ColorZone.Style>
+						<Style TargetType="materialDesign:ColorZone">
+							<Setter Property="Visibility" Value="Collapsed" />
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding Items.Count}"
+											 Value="0">
+									<Setter Property="Visibility" Value="Visible" />
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</materialDesign:ColorZone.Style>
+				</materialDesign:ColorZone>
 
-								<Setter Property="Visibility" Value="Collapsed" />
-							</MultiDataTrigger>
-						</Style.Triggers>
-					</Style>
-				</materialDesign:ColorZone.Style>
-
-				<StackPanel HorizontalAlignment="Right"
+				<StackPanel Margin="4"
+							HorizontalAlignment="Right"
 							Orientation="Horizontal">
 
 					<Button Margin="8,0,0,0"
@@ -73,7 +72,7 @@
 							Content="{materialDesign:PackIcon FileDocumentBox}"
 							Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
 							Style="{StaticResource MaterialDesignToolButton}"
-							Visibility="{Binding LoggingViewModel, Converter={StaticResource NullToVisibilityConverter}}" />
+							Visibility="{Binding LogsViewModel, Converter={StaticResource NullToVisibilityConverter}}" />
 
 					<Button Margin="8,0,0,0"
 							cal:Message.Attach="ShowSettings"
@@ -83,7 +82,7 @@
 							Style="{StaticResource MaterialDesignToolButton}"
 							Visibility="{Binding SettingsViewModel, Converter={StaticResource NullToVisibilityConverter}}" />
 				</StackPanel>
-			</materialDesign:ColorZone>
+			</Grid>
 
 			<materialDesign:Snackbar MessageQueue="{Binding ExecutionContext.MessageQueue}" />
 		</Grid>

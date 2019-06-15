@@ -1,19 +1,19 @@
-﻿<controls:MetroWindow x:Class="Blastic.UserInterface.Logging.LoggingView"
+﻿<controls:MetroWindow x:Class="Blastic.UserInterface.Logs.LogsView"
 					  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 					  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					  xmlns:cal="http://www.caliburnproject.org"
 					  xmlns:controlExtensions="clr-namespace:Blastic.ControlExtensions"
 					  xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
 					  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-					  xmlns:logging="clr-namespace:Blastic.UserInterface.Logging"
 					  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 					  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 					  xmlns:serilog="clr-namespace:Serilog.Events;assembly=Serilog"
+					  xmlns:logs="clr-namespace:Blastic.UserInterface.Logs"
 					  mc:Ignorable="d"
 					  Title="Logs"
 					  Width="1400"
 					  Height="800"
-					  d:DataContext="{d:DesignInstance logging:LoggingViewModel}"
+					  d:DataContext="{d:DesignInstance logs:LogsViewModel}"
 					  GlowBrush="{StaticResource WindowTitleColorBrush}"
 					  TitleCharacterCasing="Normal">
 
@@ -39,7 +39,7 @@
 		<DataGrid Grid.Row="1"
 				  AutoGenerateColumns="False"
 				  IsReadOnly="True"
-				  ItemsSource="{Binding Logs}">
+				  ItemsSource="{Binding LogSink.Logs}">
 
 			<DataGrid.Columns>
 				<DataGridTextColumn Width="Auto"

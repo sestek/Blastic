@@ -1,21 +1,20 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Dynamic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using Blastic.UserInterface.Settings.Logging;
 using Caliburn.Micro;
 using PropertyChanged;
-using Serilog;
-using Serilog.Core;
 using Serilog.Events;
-using Blastic.UserInterface.Settings.Logging;
 
-namespace Blastic.UserInterface.Logging
+namespace Blastic.UserInterface.Logs
 {
 	[AddINotifyPropertyChangedInterface]
-	public sealed class LoggingViewModel : ILogEventSink, IViewAware
+	public sealed class LogsViewModel : IViewAware
 	{
 		private readonly IWindowManager _windowManager;
 		private readonly LogSettingsViewModel _logSettingsViewModel;
@@ -24,33 +23,40 @@ namespace Blastic.UserInterface.Logging
 
 		public LogEventLevel MinimumLogLevel { get; set; }
 
-		public IObservableCollection<Log> Logs { get; }
+		public LogSink LogSink { get; }
 		public IObservableCollection<LogEventLevel> LogLevels { get; }
 		
-		public LoggingViewModel(
+		public LogsViewModel(
 			IWindowManager windowManager,
-			LogSettingsViewModel logSettingsViewModel)
+			LogSettingsViewModel logSettingsViewModel,
+			LogSink logSink)
 		{
 			_windowManager = windowManager;
 			_logSettingsViewModel = logSettingsViewModel;
-
-			Serilog.Log.Logger = new LoggerConfiguration()
-				.WriteTo.Logger(Serilog.Log.Logger)
-				.WriteTo.Sink(this)
-				.CreateLogger();
-
-			Logs = new BindableCollection<Log>();
+			LogSink = logSink;
+			
 			LogLevels = new BindableCollection<LogEventLevel>
 			{
 				LogEventLevel.Fatal,
 				LogEventLevel.Error,
 				LogEventLevel.Warning,
 				LogEventLevel.Information,
-				LogEventLevel.Debug,
-				LogEventLevel.Verbose,
+				LogEventLevel.Debug
 			};
 
-			MinimumLogLevel = LogEventLevel.Information;
+			MinimumLogLevel = LogEventLevel.Debug;
+
+			LogSink.Logs.CollectionChanged += LogsChanged;
+		}
+
+		private async void LogsChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			bool? hasErrorLog = e.NewItems?.Cast<Log>().Any(x => x.Level >= LogEventLevel.Error);
+
+			if (hasErrorLog == true && _logSettingsViewModel.OpenWindowOnError.Value)
+			{
+				await Show();
+			}
 		}
 
 		public async Task Show()
@@ -69,40 +75,13 @@ namespace Blastic.UserInterface.Logging
 
 		public void Clear()
 		{
-			Logs.Clear();
-		}
-
-		public async void Emit(LogEvent logEvent)
-		{
-			IReadOnlyDictionary<string, LogEventPropertyValue> properties = logEvent.Properties;
-
-			string source = "";
-
-			if (properties.TryGetValue("SourceContext", out LogEventPropertyValue sourceValue))
-			{
-				source = sourceValue.ToString();
-			}
-
-			Log log = new Log
-			{
-				Date = logEvent.Timestamp.ToString("yyyy-MM-dd HH:mm:ss.fff"),
-				Level = logEvent.Level,
-				Source = source,
-				Message = logEvent.RenderMessage()
-			};
-
-			Logs.Add(log);
-
-			if (logEvent.Level >= LogEventLevel.Error && _logSettingsViewModel.OpenWindowOnError.Value)
-			{
-				await Show();
-			}
+			LogSink.Logs.Clear();
 		}
 
 		// Will be called by Fody.
 		private void OnMinimumLogLevelChanged()
 		{
-			ICollectionView collectionView = CollectionViewSource.GetDefaultView(Logs);
+			ICollectionView collectionView = CollectionViewSource.GetDefaultView(LogSink.Logs);
 			collectionView.Filter = o => ((Log)o).Level >= MinimumLogLevel;
 		}
 

@@ -6,6 +6,7 @@ using System.Windows.Threading;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Blastic.Initialization.Extensions;
+using Blastic.UserInterface.Logs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -54,9 +55,9 @@ namespace Blastic.Initialization
 			return this;
 		}
 
-		public BlasticApplication RegisterViewAssembly(Assembly assembly)
+		public BlasticApplication RegisterViewAssembly<T>()
 		{
-			_viewAssemblies.Add(assembly);
+			_viewAssemblies.Add(typeof(T).Assembly);
 			return this;
 		}
 
@@ -68,13 +69,24 @@ namespace Blastic.Initialization
 				.ReadFrom.Configuration(configuration)
 				.CreateLogger();
 
-			RegisterViewAssembly(typeof(BlasticApplication).Assembly);
+			RegisterViewAssembly<BlasticApplication>();
 
 			Configure(x => x.RegisterInstance(configuration));
 			Configure(x => x.RegisterType<TMainViewModel>());
 
 			_containerBuilder.Populate(_serviceCollection);
 			IContainer container = _containerBuilder.Build();
+
+			LogSink logSink = container.ResolveOptional<LogSink>();
+
+			if (logSink != null)
+			{
+				Log.Logger = new LoggerConfiguration()
+					.MinimumLevel.Verbose()
+					.WriteTo.Sink(logSink)
+					.WriteTo.Logger(Log.Logger)
+					.CreateLogger();
+			}
 
 			Bootstrapper bootstrapper = new Bootstrapper(
 				container,

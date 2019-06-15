@@ -1,7 +1,9 @@
 ﻿using Autofac;
+using Blastic.Data.Initialization.Steps;
 using Blastic.Data.ProgramData;
 using Blastic.Data.Services;
 using Blastic.Initialization;
+using Blastic.Initialization.Steps;
 using Blastic.Services.Settings;
 
 namespace Blastic.Data
@@ -18,8 +20,19 @@ namespace Blastic.Data
 				DatabaseConfiguration databaseConfiguration = new DatabaseConfiguration(databaseProvider, connectionString);
 
 				builder.RegisterInstance(databaseConfiguration);
-				builder.RegisterType<ConnectionFactory>().SingleInstance();
-				builder.RegisterType<ProgramDatabase>().SingleInstance();
+
+				builder
+					.RegisterType<ConnectionFactory>()
+					.SingleInstance();
+
+				builder
+					.RegisterType<ProgramDatabase>()
+					.SingleInstance();
+
+				builder
+					.RegisterType<MigrateProgramDatabaseStep>()
+					.SingleInstance()
+					.As<IInitializationStep>();
 			});
 		}
 
@@ -28,8 +41,8 @@ namespace Blastic.Data
 			return application.Configure(builder =>
 			{
 				builder.RegisterType<SettingsService>()
-					.As<ISettingsService>()
-					.SingleInstance();
+					.SingleInstance()
+					.As<ISettingsService>();
 			});
 		}
 	}

@@ -1,6 +1,6 @@
 using Serilog.Events;
 
-namespace Blastic.UserInterface.Logging
+namespace Blastic.UserInterface.Logs
 {
 	public class Log
 	{
