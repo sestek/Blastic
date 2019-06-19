@@ -1,8 +1,9 @@
-﻿using PropertyChanged;
-using Blastic.Execution;
+﻿using Blastic.Execution;
 using Blastic.Services.Settings;
+using Blastic.UserInterface.Settings;
+using PropertyChanged;
 
-namespace Blastic.UserInterface.Settings.Logging
+namespace Blastic.UserInterface.Logs.Settings
 {
 	[AddINotifyPropertyChangedInterface]
 	public class LogSettingsViewModel : SettingsSectionViewModel

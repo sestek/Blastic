@@ -82,6 +82,7 @@ namespace Blastic.Initialization
 			if (logSink != null)
 			{
 				Log.Logger = new LoggerConfiguration()
+					.Enrich.FromLogContext()
 					.MinimumLevel.Verbose()
 					.WriteTo.Sink(logSink)
 					.WriteTo.Logger(Log.Logger)
@@ -101,7 +102,7 @@ namespace Blastic.Initialization
 
 				_application.DispatcherUnhandledException += (sender, args) =>
 				{
-					Log.Error(args.Exception, "Unhandled exception.");
+					Log.Error(args.Exception, args.Exception.Message);
 					args.Handled = true;
 				};
 
@@ -109,7 +110,7 @@ namespace Blastic.Initialization
 			}
 			catch (Exception exception)
 			{
-				Log.Error(exception, "Unhandled exception.");
+				Log.Error(exception, exception.Message);
 				throw;
 			}
 		}

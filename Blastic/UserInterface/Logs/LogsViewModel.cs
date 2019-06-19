@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using Blastic.UserInterface.Settings.Logging;
+using Blastic.UserInterface.Logs.Settings;
 using Caliburn.Micro;
 using PropertyChanged;
 using Serilog.Events;

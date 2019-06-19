@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
@@ -6,6 +7,7 @@ using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.Logging;
 using PropertyChanged;
 using Blastic.Services.Dialog;
+using Blastic.UserInterface.Events;
 
 namespace Blastic.Execution
 {
@@ -38,6 +40,7 @@ namespace Blastic.Execution
 			CancellationTokenSource = new CancellationTokenSource();
 		}
 
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		public async Task Execute(
 			Func<CancellationToken, Task> function,
 			string progressMessage = "",
@@ -74,12 +77,16 @@ namespace Blastic.Execution
 			}
 			catch (Exception exception)
 			{
-				Logger.LogError(exception, "");
+				Logger.LogError(exception, exception.Message);
 
-				if (!string.IsNullOrEmpty(failMessage))
-				{
-					MessageQueue.Enqueue(failMessage);
-				}
+				MessageQueue.Enqueue(
+					string.IsNullOrEmpty(failMessage)
+						? exception.Message
+						: failMessage,
+					"Open Logs",
+					() => EventAggregator.PublishOnUIThreadAsync(new OpenLogsEvent()));
+
+				throw;
 			}
 			finally
 			{

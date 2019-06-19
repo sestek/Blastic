@@ -1,6 +1,7 @@
 ﻿using Blastic.Services.Settings;
+using Blastic.UserInterface.Settings;
 
-namespace Blastic.UserInterface.Settings.Logging
+namespace Blastic.UserInterface.Logs.Settings
 {
 	public class OpenWindowOnErrorSetting : Setting<bool>
 	{

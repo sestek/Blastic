@@ -5,6 +5,7 @@ using Blastic.Initialization.Extensions;
 using Blastic.Sample.UserInterface;
 using Blastic.UserInterface.TabbedMain;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Blastic.Sample
 {
@@ -14,6 +15,11 @@ namespace Blastic.Sample
 		public static void Main()
 		{
 			new BlasticApplication()
+				.Configure(x => x.AddSingleton(new ProductInformation
+				{
+					ProgramName = "Blastic Sample Application",
+					Version = typeof(Program).Assembly.GetName().Version
+				}))
 				.Configure(x => x.AddJsonFile("AppSettings.json"))
 				.RegisterViewAssembly<Program>()
 				.RegisterMainTab<HomeViewModel>()

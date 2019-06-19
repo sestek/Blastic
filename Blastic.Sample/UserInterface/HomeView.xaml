@@ -1,14 +1,18 @@
 ﻿<UserControl x:Class="Blastic.Sample.UserInterface.HomeView"
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:cal="http://www.caliburnproject.org"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:local="clr-namespace:Blastic.Sample.UserInterface"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance local:HomeViewModel}">
-	<Grid>
-		<TextBlock HorizontalAlignment="Center"
-				   VerticalAlignment="Center"
-				   Text="Test" />
-	</Grid>
+	<StackPanel HorizontalAlignment="Center"
+				VerticalAlignment="Center">
+		<TextBlock Text="{Binding Text}" />
+
+		<Button cal:Message.Attach="Test"
+				Content="Test"
+				Style="{StaticResource MaterialDesignFlatButton}" />
+	</StackPanel>
 </UserControl>

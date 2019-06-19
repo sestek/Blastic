@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:controlExtensions="clr-namespace:Blastic.ControlExtensions"
+					xmlns:converters="clr-namespace:Blastic.Converters"
 					xmlns:help="clr-namespace:Blastic.Controls.Help"
 					xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
@@ -14,6 +15,9 @@
 				<ControlTemplate TargetType="{x:Type help:HelpView}">
 					<Grid Margin="{TemplateBinding Padding}"
 						  controlExtensions:GridExtensions.ColumnDefinitions="*,Auto">
+						<Grid.Resources>
+							<converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+						</Grid.Resources>
 
 						<FrameworkElement Name="DataContextProxy"
 										  Tag="{Binding HelpContent, RelativeSource={RelativeSource AncestorType=help:HelpView}}" />
@@ -27,7 +31,8 @@
 												 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
 												 materialDesign:RippleAssist.IsDisabled="True"
 												 Foreground="{StaticResource BlueBrush}"
-												 StaysOpen="True">
+												 StaysOpen="True"
+												 Visibility="{Binding HelpContent, RelativeSource={RelativeSource AncestorType=help:HelpView}, Converter={StaticResource NullToVisibilityConverter}}">
 
 							<materialDesign:PopupBox.ToggleContent>
 								<materialDesign:PackIcon Foreground="{StaticResource BlueBrush}"

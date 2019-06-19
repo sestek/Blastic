@@ -6,6 +6,7 @@ using Caliburn.Micro;
 using PropertyChanged;
 using Blastic.Caliburn;
 using Blastic.Execution;
+using Blastic.Initialization;
 using Blastic.Initialization.Steps;
 using Blastic.UserInterface.Events;
 using Blastic.UserInterface.Logs;
@@ -14,10 +15,15 @@ using Blastic.UserInterface.Settings;
 namespace Blastic.UserInterface.TabbedMain
 {
 	[AddINotifyPropertyChangedInterface]
-	public class TabbedMainViewModel : ConductorOneActiveBase<object>, IHandle<OpenTabEvent>
+	public sealed class TabbedMainViewModel
+		:
+		ConductorOneActiveBase<object>,
+		IHandle<OpenTabEvent>,
+		IHandle<OpenLogsEvent>
 	{
 		private readonly List<IInitializationStep> _initializationSteps;
 
+		public ProductInformation ProductInformation { get; }
 		public LogsViewModel LogsViewModel { get; }
 		public SettingsViewModel SettingsViewModel { get; }
 
@@ -27,11 +33,13 @@ namespace Blastic.UserInterface.TabbedMain
 			ExecutionContextFactory executionContextFactory,
 			IEnumerable<IMainTab> mainTabs,
 			IEnumerable<IInitializationStep> initializationSteps,
+			ProductInformation productInformation = null,
 			LogsViewModel logsViewModel = null,
 			SettingsViewModel settingsViewModel = null)
 			:
 			base(executionContextFactory)
 		{
+			ProductInformation = productInformation;
 			LogsViewModel = logsViewModel;
 			SettingsViewModel = settingsViewModel;
 
@@ -49,6 +57,11 @@ namespace Blastic.UserInterface.TabbedMain
 			ActiveItem = Items.FirstOrDefault();
 
 			ExecutionContext.EventAggregator.SubscribeOnPublishedThread(this);
+
+			if (ProductInformation != null)
+			{
+				DisplayName = $"{ProductInformation.ProgramName} - {ProductInformation.Version}";
+			}
 		}
 
 		protected override async Task OnActivateAsync(CancellationToken cancellationToken)
@@ -63,6 +76,8 @@ namespace Blastic.UserInterface.TabbedMain
 					initializationStep.ShowBusyIndicator,
 					cancellationToken);
 			}
+
+			await base.OnActivateAsync(cancellationToken);
 		}
 
 		public async Task ShowLogs()
@@ -91,6 +106,11 @@ namespace Blastic.UserInterface.TabbedMain
 			}
 
 			await ActivateItemAsync(tab, cancellationToken);
+		}
+
+		public async Task HandleAsync(OpenLogsEvent message, CancellationToken cancellationToken)
+		{
+			await ShowLogs();
 		}
 	}
 }

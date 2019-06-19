@@ -1,4 +1,4 @@
-﻿namespace Blastic.UserInterface.Settings.Logging
+﻿namespace Blastic.UserInterface.Logs.Settings
 {
 	public partial class LogSettingsView
 	{

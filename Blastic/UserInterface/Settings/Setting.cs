@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using PropertyChanged;
 using Blastic.Services.Settings;
+using Forge.Forms.Annotations;
+using MaterialDesignThemes.Wpf;
 
 namespace Blastic.UserInterface.Settings
 {
@@ -10,6 +12,7 @@ namespace Blastic.UserInterface.Settings
 	/// </summary>
 	/// <typeparam name="T">Type of the value. Should be a primitive type.</typeparam>
 	[AddINotifyPropertyChangedInterface]
+	[Form(Mode = DefaultFields.None)]
 	public class Setting<T>
 	{
 		private readonly ISettingsService _settingsService;
@@ -30,6 +33,11 @@ namespace Blastic.UserInterface.Settings
 		public string Help { get; set; }
 
 		/// <summary>
+		/// Icon to show.
+		/// </summary>
+		public PackIconKind? Icon { get; set; }
+
+		/// <summary>
 		/// Default value to be returned when key does not exist in database.
 		/// </summary>
 		public T DefaultValue { get; }
@@ -38,6 +46,9 @@ namespace Blastic.UserInterface.Settings
 		/// This property will be bound to the setting UI. Use this property while
 		/// checking for errors.
 		/// </summary>
+		[Field(
+			Name = "{Binding " + nameof(Label) + "}",
+			Icon = "{Binding " + nameof(Icon) + "}")]
 		public T SettingValue { get; set; }
 
 		/// <summary>
