@@ -7,7 +7,9 @@ namespace Blastic.ControlExtensions
 {
     public static class TextBoxMasking
     {
-        public static readonly DependencyProperty MaskProperty = DependencyProperty.RegisterAttached(
+	    public const string IntegerMask = @"^([+-]?[1-9]\d*|0)$";
+
+	    public static readonly DependencyProperty MaskProperty = DependencyProperty.RegisterAttached(
 	        nameof(MaskProperty).Replace("Property", ""),
 	        typeof(string),
 	        typeof(TextBoxMasking),

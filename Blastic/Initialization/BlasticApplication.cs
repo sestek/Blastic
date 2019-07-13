@@ -65,9 +65,8 @@ namespace Blastic.Initialization
 		{
 			IConfiguration configuration = _configurationBuilder.Build();
 
-			Log.Logger = new LoggerConfiguration()
-				.ReadFrom.Configuration(configuration)
-				.CreateLogger();
+			LoggerConfiguration loggerConfiguration = new LoggerConfiguration()
+				.ReadFrom.Configuration(configuration);
 
 			RegisterViewAssembly<BlasticApplication>();
 
@@ -81,13 +80,10 @@ namespace Blastic.Initialization
 
 			if (logSink != null)
 			{
-				Log.Logger = new LoggerConfiguration()
-					.Enrich.FromLogContext()
-					.MinimumLevel.Verbose()
-					.WriteTo.Sink(logSink)
-					.WriteTo.Logger(Log.Logger)
-					.CreateLogger();
+				loggerConfiguration.WriteTo.Sink(logSink);
 			}
+
+			Log.Logger = loggerConfiguration.CreateLogger();
 
 			Bootstrapper bootstrapper = new Bootstrapper(
 				container,

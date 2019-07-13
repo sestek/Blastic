@@ -1,11 +1,11 @@
-﻿using System;
+﻿using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using AdaptiveCards;
 using Blastic.Caliburn;
 using Blastic.Common;
 using Blastic.Execution;
 using Blastic.UserInterface.TabbedMain;
-using Forge.Forms;
 
 namespace Blastic.Sample.UserInterface
 {
@@ -15,6 +15,7 @@ namespace Blastic.Sample.UserInterface
 		public bool IsFixed => true;
 
 		public string Text { get; set; }
+		public AdaptiveCard Card { get; set; }
 
 		public HomeViewModel(ExecutionContextFactory executionContextFactory) : base(executionContextFactory)
 		{
@@ -33,18 +34,9 @@ namespace Blastic.Sample.UserInterface
 			return Task.CompletedTask;
 		}
 
-		public async Task Test()
+		public void Test()
 		{
-			await ExecutionContext.Execute(x =>
-			{
-				throw new Exception("Tadaa!");
-			});
-
-			await Show.Dialog().For(new Prompt<string>
-			{
-				Message = "Test message",
-				Title = "Test title"
-			});
+			Card = AdaptiveCard.FromJson(File.ReadAllText(@"C:\Users\yusuf.gunaydin\Desktop\temp\card.json")).Card;
 		}
 	}
 }
