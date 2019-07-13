@@ -1,0 +1,48 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  version: '1.0.0-$(Build.BuildNumber)'
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: CmdLine@2
+  inputs:
+    script: 'choco install vswhere'
+
+- template: azure-pipelines-project-template.yml
+  parameters:
+    project: 'Blastic'
+    version: ${{ variables.version }}
+    buildConfiguration: ${{ variables.buildConfiguration }}
+
+- template: azure-pipelines-project-template.yml
+  parameters:
+    project: 'Blastic.Data'
+    version: ${{ variables.version }}
+    buildConfiguration: ${{ variables.buildConfiguration }}
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'push'
+    feedsToUse: 'select'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: 'Blastic'
