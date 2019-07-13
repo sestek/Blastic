@@ -29,13 +29,13 @@ steps:
 
 - template: azure-pipelines-project-template.yml
   parameters:
-    project: 'Blastic'
+    project: Blastic
     version: ${{ variables.version }}
     buildConfiguration: ${{ variables.buildConfiguration }}
 
 - template: azure-pipelines-project-template.yml
   parameters:
-    project: 'Blastic.Data'
+    project: Blastic.Data
     version: ${{ variables.version }}
     buildConfiguration: ${{ variables.buildConfiguration }}
 
@@ -45,4 +45,4 @@ steps:
     feedsToUse: 'select'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;'
     nuGetFeedType: 'internal'
-    publishVstsFeed: 'Blastic'
+    publishVstsFeed: 'ytg'
