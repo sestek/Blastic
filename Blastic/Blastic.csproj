@@ -79,10 +79,12 @@
     <Compile Include="ControlExtensions\HorizontalScrollingExtensions.cs" />
     <Compile Include="ControlExtensions\PanelExtensions.cs" />
     <Compile Include="ControlExtensions\PasswordBoxExtensions.cs" />
+    <Compile Include="ControlExtensions\ScrollViewerExtensions.cs" />
     <Compile Include="ControlExtensions\TextBoxMasking.cs" />
-    <Compile Include="Controls\AdaptiveCards\AdaptiveCardControl.xaml.cs">
-      <DependentUpon>AdaptiveCardControl.xaml</DependentUpon>
+    <Compile Include="Controls\AdaptiveCards\AdaptiveCardView.xaml.cs">
+      <DependentUpon>AdaptiveCardView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\AdaptiveCards\AdaptiveCardViewModel.cs" />
     <Compile Include="Controls\AdaptiveCards\DateInputRenderer.cs" />
     <Compile Include="Controls\AdaptiveCards\TimeInputRenderer.cs" />
     <Compile Include="Controls\BusyIndicator.xaml.cs">
@@ -96,6 +98,9 @@
     </Compile>
     <Compile Include="Controls\Help\HelpView.cs" />
     <Compile Include="Controls\LabeledControl.cs" />
+    <Compile Include="Controls\LabeledPasswordBox.xaml.cs">
+      <DependentUpon>LabeledPasswordBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\LabeledTextBlock.xaml.cs">
       <DependentUpon>LabeledTextBlock.xaml</DependentUpon>
     </Compile>
@@ -288,7 +293,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\AdaptiveCards\AdaptiveCardControl.xaml">
+    <Page Include="Controls\AdaptiveCards\AdaptiveCardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -303,6 +308,10 @@
     <Page Include="Controls\FilePicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\LabeledPasswordBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\LabeledTextBlock.xaml">
       <Generator>MSBuild:Compile</Generator>

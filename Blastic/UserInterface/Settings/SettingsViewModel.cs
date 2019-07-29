@@ -22,6 +22,7 @@ namespace Blastic.UserInterface.Settings
 		public IObservableCollection<ISettingsSectionViewModel> Items { get; set; }
 		public IObservableCollection<DiagnosticMessage> DiagnosticMessages { get; set; }
 
+		public TaskCompletionSource<bool> ShowDiagnosticMessagesTaskCompletionSource { get; set; }
 		public bool IsDiagnosticMessagesVisible { get; set; }
 
 		public SettingsViewModel(
@@ -62,20 +63,29 @@ namespace Blastic.UserInterface.Settings
 			_hasReadSettings = true;
 		}
 
-		public async Task Save()
+		public async void Save()
 		{
-			DiagnosticMessages.Clear();
-
-			foreach (ISettingsSectionViewModel item in Items)
+			async Task Check(CancellationToken cancellationToken)
 			{
-				IEnumerable<DiagnosticMessage> diagnosticMessages = item.GetDiagnosticMessages();
-				DiagnosticMessages.AddRange(diagnosticMessages);
+				DiagnosticMessages.Clear();
+
+				foreach (ISettingsSectionViewModel item in Items)
+				{
+					IEnumerable<DiagnosticMessage> diagnosticMessages = await item.GetDiagnosticMessages(cancellationToken);
+					DiagnosticMessages.AddRange(diagnosticMessages);
+				}
 			}
 
-			if (DiagnosticMessages.Any(x => x.Severity == Severity.Error))
+			await ExecutionContext.Execute(Check, "Validating settings.");
+
+			if (DiagnosticMessages.Any(x => x.Severity >= Severity.Warning))
 			{
-				ShowDiagnosticMessages();
-				return;
+				bool shouldContinue = await ShowDiagnosticMessages();
+
+				if (!shouldContinue)
+				{
+					return;
+				}
 			}
 
 			async Task Save(CancellationToken cancellationToken)
@@ -91,14 +101,24 @@ namespace Blastic.UserInterface.Settings
 			await TryCloseAsync();
 		}
 
-		private void ShowDiagnosticMessages()
+		private Task<bool> ShowDiagnosticMessages()
 		{
+			ShowDiagnosticMessagesTaskCompletionSource = new TaskCompletionSource<bool>();
 			IsDiagnosticMessagesVisible = true;
+
+			return ShowDiagnosticMessagesTaskCompletionSource.Task;
 		}
 
 		public void HideDiagnosticMessages()
 		{
 			IsDiagnosticMessagesVisible = false;
+			ShowDiagnosticMessagesTaskCompletionSource.SetResult(false);
+		}
+
+		public void HideDiagnosticMessagesIgnoreErrors()
+		{
+			IsDiagnosticMessagesVisible = false;
+			ShowDiagnosticMessagesTaskCompletionSource.SetResult(true);
 		}
 
 		public async Task Cancel()

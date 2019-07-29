@@ -4,6 +4,7 @@
 					  xmlns:cal="http://www.caliburnproject.org"
 					  xmlns:controlExtensions="clr-namespace:Blastic.ControlExtensions"
 					  xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+					  xmlns:controls1="clr-namespace:Blastic.Controls"
 					  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 					  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 					  xmlns:settings="clr-namespace:Blastic.UserInterface.Settings"
@@ -74,13 +75,22 @@
 						</ItemsControl>
 					</ScrollViewer>
 
-					<Button Grid.Row="2"
-					        HorizontalAlignment="Right"
-					        Content="OK"
-							cal:Message.Attach="HideDiagnosticMessages"
-					        Style="{StaticResource MaterialDesignFlatButton}"/>
+					<StackPanel Grid.Row="2"
+								HorizontalAlignment="Right"
+								Orientation="Horizontal">
+
+						<Button cal:Message.Attach="HideDiagnosticMessagesIgnoreErrors"
+						        Content="Save Anyways"
+						        Style="{StaticResource MaterialDesignFlatButton}" />
+
+						<Button cal:Message.Attach="HideDiagnosticMessages"
+						        Content="Cancel"
+						        Style="{StaticResource MaterialDesignFlatButton}" />
+					</StackPanel>
 				</Grid>
 			</Grid>
 		</simpleChildWindow:ChildWindow>
+
+		<controls1:BusyIndicator ExecutionContext="{Binding ExecutionContext}" />
 	</Grid>
 </controls:MetroWindow>

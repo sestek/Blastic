@@ -6,7 +6,9 @@ namespace Blastic.ControlExtensions
 {
 	public class PasswordBoxExtensions
 	{
-		[AttachedProperty(Options = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
+		[AttachedProperty(
+			OnPropertyChanged = nameof(OnPasswordChanged),
+			Options = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
 		public static string BoundPassword { get; set; }
 
 		[AttachedProperty(OnPropertyChanged = nameof(OnBindPasswordChanged))]
@@ -20,6 +22,23 @@ namespace Blastic.ControlExtensions
 		{
 		}
 
+		private static void OnPasswordChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+		{
+			if (!(dependencyObject is PasswordBox passwordBox))
+			{
+				return;
+			}
+
+			string newValue = (string)e.NewValue;
+
+			if (passwordBox.Password == newValue)
+			{
+				return;
+			}
+
+			passwordBox.Password = newValue;
+		}
+
 		private static void OnBindPasswordChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
 			if (!(dependencyObject is PasswordBox passwordBox))
@@ -27,8 +46,8 @@ namespace Blastic.ControlExtensions
 				return;
 			}
 
-			bool wasBound = (bool)(e.OldValue);
-			bool needToBind = (bool)(e.NewValue);
+			bool wasBound = (bool)e.OldValue;
+			bool needToBind = (bool)e.NewValue;
 
 			if (wasBound)
 			{

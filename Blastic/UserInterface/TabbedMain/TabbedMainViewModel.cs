@@ -64,7 +64,7 @@ namespace Blastic.UserInterface.TabbedMain
 			}
 		}
 
-		protected override async Task OnActivateAsync(CancellationToken cancellationToken)
+		protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
 		{
 			foreach (IInitializationStep initializationStep in _initializationSteps)
 			{
@@ -74,10 +74,10 @@ namespace Blastic.UserInterface.TabbedMain
 					initializationStep.SuccessMessage,
 					initializationStep.FailureMessage,
 					initializationStep.ShowBusyIndicator,
+					rethrowUnhandledException: true,
+					initializationStep.IsCancellationSupported,
 					cancellationToken);
 			}
-
-			await base.OnActivateAsync(cancellationToken);
 		}
 
 		public async Task ShowLogs()

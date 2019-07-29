@@ -38,13 +38,15 @@ namespace Blastic.Data
 			using (Logger.BeginScope("Applying migrations."))
 			{
 				Version currentVersion = await DatabaseInformationTable.GetVersion(connection, cancellationToken);
-				Version newVersion = await MigrateAsync(connection, currentVersion, targetVersion,cancellationToken);
+				Version newVersion = await MigrateAsync(connection, currentVersion, targetVersion, cancellationToken);
 
-				if (currentVersion != newVersion)
+				if (currentVersion == newVersion)
 				{
-					await DatabaseInformationTable.SetVersion(connection, newVersion, cancellationToken);
+					transactionScope.Complete();
+					return;
 				}
-					
+
+				await DatabaseInformationTable.SetVersion(connection, newVersion, cancellationToken);
 				transactionScope.Complete();
 
 				Logger.LogInformation("Finished migrations. New version: {0}", newVersion);
@@ -78,6 +80,11 @@ namespace Blastic.Data
 
 			currentVersion = currentVersion ?? new Version(0, 0, 0);
 			targetVersion = targetVersion ?? migrations.Max(x => x.Key);
+
+			if (currentVersion == targetVersion)
+			{
+				return targetVersion;
+			}
 
 			Logger.LogInformation("Current version: {0}. Target version: {1}", currentVersion, targetVersion);
 

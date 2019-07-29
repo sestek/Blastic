@@ -20,6 +20,7 @@ namespace Blastic.Data.Initialization.Steps
 		public string SuccessMessage { get; }
 		public string FailureMessage { get; }
 
+		public bool IsCancellationSupported => false;
 		public bool ShowBusyIndicator => true;
 
 		public MigrateProgramDatabaseStep(

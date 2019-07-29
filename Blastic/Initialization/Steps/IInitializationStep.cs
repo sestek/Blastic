@@ -12,6 +12,7 @@ namespace Blastic.Initialization.Steps
 		string SuccessMessage { get; }
 		string FailureMessage { get; }
 
+		bool IsCancellationSupported { get; }
 		bool ShowBusyIndicator { get; }
 
 		Task Initialize(CancellationToken cancellationToken);

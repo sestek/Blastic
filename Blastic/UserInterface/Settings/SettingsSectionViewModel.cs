@@ -57,9 +57,9 @@ namespace Blastic.UserInterface.Settings
 			}
 		}
 
-		public virtual IEnumerable<DiagnosticMessage> GetDiagnosticMessages()
+		public virtual Task<IEnumerable<DiagnosticMessage>> GetDiagnosticMessages(CancellationToken cancellationToken)
 		{
-			return Enumerable.Empty<DiagnosticMessage>();
+			return Task.FromResult(Enumerable.Empty<DiagnosticMessage>());
 		}
 
 		public string this[string columnName]

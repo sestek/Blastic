@@ -16,25 +16,35 @@
 								   ShowTitleBar="False">
 
 		<Grid Margin="8,16,8,8"
-			  controlExtensions:GridExtensions.RowDefinitions="Auto,Auto,Auto">
+			  controlExtensions:GridExtensions.RowDefinitions="Auto,*,Auto,Auto">
 
 			<TextBlock Grid.Row="0"
 					   MinWidth="400"
 					   MaxWidth="600"
+					   HorizontalAlignment="Left"
 					   VerticalAlignment="Center"
 					   Text="{Binding ExecutionContext.ProgressMessage, RelativeSource={RelativeSource AncestorType=controls:BusyIndicator}}" />
 
-			<ProgressBar Grid.Row="1"
+			<ScrollViewer Grid.Row="1"
+						  MaxHeight="400"
+						  Margin="8,8,0,0"
+						  controlExtensions:ScrollViewerExtensions.AutoScroll="True"
+						  VerticalScrollBarVisibility="Auto">
+				<ItemsControl ItemsSource="{Binding ExecutionContext.ProgressDetails, RelativeSource={RelativeSource AncestorType=controls:BusyIndicator}}" />
+			</ScrollViewer>
+
+			<ProgressBar Grid.Row="2"
 						 Margin="0,24,0,8"
 						 VerticalAlignment="Center"
 						 IsIndeterminate="True" />
 
 			<Button Name="CancelButton"
-					Grid.Row="2"
+					Grid.Row="3"
 					HorizontalAlignment="Right"
 					cal:Action.TargetWithoutContext="{Binding RelativeSource={RelativeSource AncestorType=controls:BusyIndicator}}"
 					cal:Message.Attach="Cancel"
 					Content="Cancel"
+					IsEnabled="{Binding ExecutionContext.IsCancellationSupported, RelativeSource={RelativeSource AncestorType=controls:BusyIndicator}}"
 					Style="{StaticResource MaterialDesignFlatButton}" />
 		</Grid>
 	</simpleChildWindow:ChildWindow>

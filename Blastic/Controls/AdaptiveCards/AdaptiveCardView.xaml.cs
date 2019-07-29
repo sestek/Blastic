@@ -8,10 +8,12 @@ using AdaptiveCards;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Wpf;
 using Bindables;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Blastic.Controls.AdaptiveCards
 {
-	public partial class AdaptiveCardControl
+	public partial class AdaptiveCardView
 	{
 		private RenderedAdaptiveCard _renderedCard;
 
@@ -23,14 +25,14 @@ namespace Blastic.Controls.AdaptiveCards
 		[DependencyProperty(OnPropertyChanged = nameof(OnAdaptiveCardChanged))]
 		public AdaptiveCard AdaptiveCard { get; set; }
 
-		public AdaptiveCardControl()
+		public AdaptiveCardView()
 		{
 			InitializeComponent();
 
 			Loaded += (sender, args) =>
 			{
 				CommandBinding binding = new CommandBinding(NavigationCommands.GoToPage, GoToPage, CanGoToPage);
-				CommandManager.RegisterClassCommandBinding(typeof(AdaptiveCardControl), binding);
+				CommandManager.RegisterClassCommandBinding(typeof(AdaptiveCardView), binding);
 			};
 
 			Renderer = new AdaptiveCardRenderer
@@ -68,8 +70,8 @@ namespace Blastic.Controls.AdaptiveCards
 				return;
 			}
 
-			AdaptiveCardControl adaptiveCardControl = (AdaptiveCardControl) d;
-			adaptiveCardControl.RenderCard(adaptiveCard);
+			AdaptiveCardView adaptiveCardView = (AdaptiveCardView) d;
+			adaptiveCardView.RenderCard(adaptiveCard);
 		}
 
 		private void RenderCard(AdaptiveCard adaptiveCard)
@@ -98,6 +100,17 @@ namespace Blastic.Controls.AdaptiveCards
 			if (e.Action is AdaptiveOpenUrlAction openUrlAction)
 			{
 				Process.Start(openUrlAction.Url.AbsoluteUri);
+				return;
+			}
+
+			if (e.Action is AdaptiveSubmitAction submitAction)
+			{
+				JObject inputs = sender.UserInputs.AsJson();
+
+				// Merge the Action.Submit Data property with the inputs
+				inputs.Merge(submitAction.Data);
+
+				MessageBox.Show(JsonConvert.SerializeObject(inputs, Formatting.Indented), "SubmitAction");
 			}
 
 			// TODO: Redirect actions to viewmodels.
@@ -112,15 +125,6 @@ namespace Blastic.Controls.AdaptiveCards
 			//		dialog.ShowDialog();
 			//	}
 			//}
-			//else if (e.Action is AdaptiveSubmitAction submitAction)
-			//{
-			//	var inputs = sender.UserInputs.AsJson();
-
-			//	// Merge the Action.Submit Data property with the inputs
-			//	inputs.Merge(submitAction.Data);
-
-			//	MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented), "SubmitAction");
-			//}
 		}
 
 		private ResourceDictionary LoadResources()
@@ -133,7 +137,7 @@ namespace Blastic.Controls.AdaptiveCards
 
 		private AdaptiveHostConfig LoadHostConfig()
 		{
-			Assembly assembly = typeof(AdaptiveCardControl).Assembly;
+			Assembly assembly = typeof(AdaptiveCardView).Assembly;
 
 			using (Stream stream = assembly.GetManifestResourceStream("Blastic.Themes.AdaptiveCardConfig.json"))
 			using (StreamReader reader = new StreamReader(stream))

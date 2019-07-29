@@ -9,7 +9,7 @@ namespace Blastic.UserInterface.Settings
 	{
 		string SectionName { get; }
 		
-		IEnumerable<DiagnosticMessage> GetDiagnosticMessages();
+		Task<IEnumerable<DiagnosticMessage>> GetDiagnosticMessages(CancellationToken cancellationToken);
 
 		Task Save(CancellationToken cancellationToken);
 		Task ReadSettings(CancellationToken cancellationToken);

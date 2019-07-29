@@ -22,6 +22,9 @@ namespace Blastic.Execution
 
 		public bool IsBusy { get; set; }
 		public string ProgressMessage { get; set; }
+		public IObservableCollection<string> ProgressDetails { get; }
+
+		public bool IsCancellationSupported { get; set; }
 		public CancellationTokenSource CancellationTokenSource { get; private set; }
 
 		public ExecutionContext(
@@ -37,6 +40,7 @@ namespace Blastic.Execution
 			EventAggregator = eventAggregator;
 			MessageQueue = messageQueue;
 
+			ProgressDetails = new BindableCollection<string>();
 			CancellationTokenSource = new CancellationTokenSource();
 		}
 
@@ -47,6 +51,8 @@ namespace Blastic.Execution
 			string successMessage = "",
 			string failMessage = "",
 			bool showProgress = true,
+			bool rethrowUnhandledException = true,
+			bool isCancellationSupported = true,
 			CancellationToken? customCancellationToken = null)
 		{
 			try
@@ -57,6 +63,9 @@ namespace Blastic.Execution
 					ProgressMessage = progressMessage;
 				}
 
+				ProgressDetails.Clear();
+				IsCancellationSupported = isCancellationSupported;
+				
 				if (CancellationTokenSource.IsCancellationRequested)
 				{
 					CancellationTokenSource?.Dispose();
@@ -86,7 +95,10 @@ namespace Blastic.Execution
 					"Open Logs",
 					() => EventAggregator.PublishOnUIThreadAsync(new OpenLogsEvent()));
 
-				throw;
+				if (rethrowUnhandledException)
+				{
+					throw;
+				}
 			}
 			finally
 			{
