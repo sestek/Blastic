@@ -87,7 +87,7 @@ namespace Blastic.Data
 			AmbientConnectionsTable.Remove(transaction);
 		}
 
-		internal Connection CreateConnection()
+		public Connection CreateConnection()
 		{
 			return new Connection(this, _databaseConfiguration.DatabaseProvider, _logger);
 		}
