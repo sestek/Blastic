@@ -80,7 +80,9 @@
     <Compile Include="ControlExtensions\PanelExtensions.cs" />
     <Compile Include="ControlExtensions\PasswordBoxExtensions.cs" />
     <Compile Include="ControlExtensions\ScrollViewerExtensions.cs" />
+    <Compile Include="ControlExtensions\TextBoxExtensions.cs" />
     <Compile Include="ControlExtensions\TextBoxMasking.cs" />
+    <Compile Include="ControlExtensions\VisualTreeExtensions.cs" />
     <Compile Include="Controls\AdaptiveCards\AdaptiveCardView.xaml.cs">
       <DependentUpon>AdaptiveCardView.xaml</DependentUpon>
     </Compile>
