@@ -42,7 +42,7 @@
                                HorizontalAlignment="Left"
                                Margin="0 2"
                                TextWrapping="Wrap"
-                               Text="{Binding CurrentItem.ErrorContent}"
+                               Text="{Binding AdornedElement.(Validation.ValidationAdornerSiteFor).(Validation.Errors)[0].ErrorContent, ElementName=Placeholder}"
                                UseLayoutRounding="false" />
 				</Border>
 			</controlzEx:PopupEx>

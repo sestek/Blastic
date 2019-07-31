@@ -18,6 +18,7 @@
 	</controls:LabeledControl.ButtonContent>
 
 	<TextBox Margin="0,-4,0,0"
+			 materialDesign:ValidationAssist.OnlyShowOnFocus="True"
 			 FontWeight="Light"
 			 Style="{StaticResource MaterialDesignTextBoxWithCustomValidation}"
 			 Text="{Binding Path, RelativeSource={RelativeSource AncestorType=controls:FilePicker}, UpdateSourceTrigger=PropertyChanged}"

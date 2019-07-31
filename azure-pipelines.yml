@@ -8,7 +8,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  version: '1.0.0-$(Build.BuildNumber)'
+  version: '0.1.0-$(Build.BuildNumber)'
 
 steps:
 - task: NuGetToolInstaller@1
@@ -42,7 +42,6 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'push'
-    feedsToUse: 'select'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;'
-    nuGetFeedType: 'internal'
-    publishVstsFeed: 'ytg'
+    nuGetFeedType: external
+    publishFeedCredentials: 'NuGet'
