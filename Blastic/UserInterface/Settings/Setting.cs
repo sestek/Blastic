@@ -72,28 +72,30 @@ namespace Blastic.UserInterface.Settings
 
 		public async Task Read(CancellationToken cancellationToken)
 		{
-			Value = await _settingsService.Get(Key, DefaultValue, cancellationToken);
-			SettingValue = Value;
+			T value = await _settingsService.Get(Key, DefaultValue, cancellationToken);
 
-			await AfterRead(cancellationToken);
+			await AfterRead(value, cancellationToken);
+
+			Value = value;
+			SettingValue = value;
 		}
 
 		public async Task Save(CancellationToken cancellationToken)
 		{
-			await BeforeSave(cancellationToken);
+			T valueToSave = await BeforeSave(SettingValue, cancellationToken);
 
-			await _settingsService.Put(Key, SettingValue, cancellationToken);
+			await _settingsService.Put(Key, valueToSave, cancellationToken);
 			Value = SettingValue;
 		}
 
-		public virtual Task AfterRead(CancellationToken cancellationToken)
+		protected virtual Task AfterRead(T value, CancellationToken cancellationToken)
 		{
-			return Task.CompletedTask;
+			return Task.FromResult(value);
 		}
 
-		public virtual Task BeforeSave(CancellationToken cancellationToken)
+		protected virtual Task<T> BeforeSave(T valueToSave, CancellationToken cancellationToken)
 		{
-			return Task.CompletedTask;
+			return Task.FromResult(valueToSave);
 		}
 
 		public void Revert()
