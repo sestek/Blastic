@@ -74,12 +74,26 @@ namespace Blastic.UserInterface.Settings
 		{
 			Value = await _settingsService.Get(Key, DefaultValue, cancellationToken);
 			SettingValue = Value;
+
+			await AfterRead(cancellationToken);
 		}
 
 		public async Task Save(CancellationToken cancellationToken)
 		{
+			await BeforeSave(cancellationToken);
+
 			await _settingsService.Put(Key, SettingValue, cancellationToken);
 			Value = SettingValue;
+		}
+
+		public virtual Task AfterRead(CancellationToken cancellationToken)
+		{
+			return Task.CompletedTask;
+		}
+
+		public virtual Task BeforeSave(CancellationToken cancellationToken)
+		{
+			return Task.CompletedTask;
 		}
 
 		public void Revert()
