@@ -74,6 +74,7 @@
     <Compile Include="Common\Order.cs" />
     <Compile Include="ControlExtensions\DataGridColumnSizeExtensions.cs" />
     <Compile Include="ControlExtensions\DataGridRowNumberBehavior.cs" />
+    <Compile Include="ControlExtensions\DragDropExtensions.cs" />
     <Compile Include="ControlExtensions\FocusExtensions.cs" />
     <Compile Include="ControlExtensions\GridExtensions.cs" />
     <Compile Include="ControlExtensions\HorizontalScrollingExtensions.cs" />
