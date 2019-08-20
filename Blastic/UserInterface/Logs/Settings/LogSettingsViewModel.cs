@@ -1,4 +1,6 @@
 ﻿using Blastic.Execution;
+using Blastic.Services.Dialog;
+using Blastic.Services.Dialog.FileFilters;
 using Blastic.Services.Settings;
 using Blastic.UserInterface.Settings;
 using PropertyChanged;
@@ -10,15 +12,18 @@ namespace Blastic.UserInterface.Logs.Settings
 	{
 		public override string SectionName => "Logs";
 		
-		public OpenWindowOnErrorSetting OpenWindowOnError { get; }
+		public OpenWindowOnErrorSetting OpenWindowOnErrorSetting { get; }
 		
 		public LogSettingsViewModel(
 			ExecutionContextFactory executionContextFactory,
-			ISettingsService settingsService)
+			ISettingsService settingsService,
+			IDialogService dialogService)
 			:
-			base(executionContextFactory)
+			base(executionContextFactory, settingsService)
 		{
-			OpenWindowOnError = new OpenWindowOnErrorSetting(settingsService);
+			OpenWindowOnErrorSetting = new OpenWindowOnErrorSetting(settingsService);
+
+			RegisterForUI(OpenWindowOnErrorSetting);
 		}
 	}
 }

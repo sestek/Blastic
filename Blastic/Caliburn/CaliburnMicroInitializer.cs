@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Input;
+using Blastic.UserInterface.Settings;
 using Caliburn.Micro;
 using TriggerBase = Microsoft.Xaml.Behaviors.TriggerBase;
 
@@ -37,6 +38,18 @@ namespace Blastic.Caliburn
 				}
 
 				return defaultCreateTrigger(target, triggerText);
+			};
+
+			Func<Type, DependencyObject, object, UIElement> defaultFunction = ViewLocator.LocateForModelType;
+
+			ViewLocator.LocateForModelType = (type, o, arg) =>
+			{
+				if (typeof(ISettingsSectionViewModel).IsAssignableFrom(type))
+				{
+					return ViewLocator.GetOrCreateViewType(typeof(FormSettingSectionView));
+				}
+
+				return defaultFunction(type, o, arg);
 			};
 		}
 	}

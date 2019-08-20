@@ -22,9 +22,9 @@
 						  VerticalScrollBarVisibility="Auto">
 				<ItemsControl ItemsSource="{Binding Items}">
 					<ItemsControl.ItemTemplate>
-						<DataTemplate>
+						<DataTemplate DataType="settings:SettingsSectionViewModel">
 							<Expander Header="{Binding SectionName}"
-									  IsExpanded="True">
+							          IsExpanded="{Binding IsExpanded.SettingValue}">
 								<ContentControl Margin="32,-8,24,16"
 												HorizontalContentAlignment="Stretch"
 												VerticalContentAlignment="Stretch"
@@ -38,7 +38,7 @@
 			</ScrollViewer>
 
 			<StackPanel Grid.Row="1"
-						Margin="0,0,16,16"
+						Margin="0,8,16,8"
 						HorizontalAlignment="Right"
 						Orientation="Horizontal">
 				<Button cal:Message.Attach="Save"

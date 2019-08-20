@@ -68,8 +68,13 @@ namespace Blastic.UserInterface.TabbedMain
 		{
 			foreach (IInitializationStep initializationStep in _initializationSteps)
 			{
+				if (!await initializationStep.ShouldExecute(cancellationToken))
+				{
+					continue;
+				}
+
 				await ExecutionContext.Execute(
-					initializationStep.Initialize,
+					initializationStep.Execute,
 					initializationStep.Description,
 					initializationStep.SuccessMessage,
 					initializationStep.FailureMessage,

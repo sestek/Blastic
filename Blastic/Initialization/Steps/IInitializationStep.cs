@@ -15,6 +15,7 @@ namespace Blastic.Initialization.Steps
 		bool IsCancellationSupported { get; }
 		bool ShowBusyIndicator { get; }
 
-		Task Initialize(CancellationToken cancellationToken);
+		Task<bool> ShouldExecute(CancellationToken cancellationToken);
+		Task Execute(CancellationToken cancellationToken);
 	}
 }

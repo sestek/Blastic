@@ -31,6 +31,20 @@ namespace Blastic.Data
 			return new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
 		}
 
+		public async Task<bool> IsMigrationAvailable(CancellationToken cancellationToken)
+		{
+			using (Connection connection = ConnectionFactory.CreateConnection())
+			{
+				Version currentVersion = await DatabaseInformationTable.GetVersion(connection, cancellationToken);
+				Version newVersion = GetMigrations()
+					.Select(Activator.CreateInstance)
+					.Cast<MigrationBase>()
+					.Max(x => x.Version);
+
+				return currentVersion != newVersion;
+			}
+		}
+
 		public async Task MigrateAsync(CancellationToken cancellationToken, Version targetVersion = null)
 		{
 			using (TransactionScope transactionScope = CreateTransactionScope())
@@ -59,17 +73,7 @@ namespace Blastic.Data
 			Version targetVersion,
 			CancellationToken cancellationToken)
 		{
-			Assembly assembly = Assembly.GetAssembly(GetType());
-
-			IEnumerable<Type> genericMigrationTypes = assembly.GetTypes()
-				.Where(x => !x.IsAbstract)
-				.Where(x => x.BaseType == typeof(MigrationBase));
-
-			IEnumerable<Type> migrationTypes = assembly.GetTypes()
-				.Where(x => !x.IsAbstract)
-				.Where(x => x.IsSubclassOf(typeof(T)));
-
-			IEnumerable<Type> allMigrations = genericMigrationTypes.Concat(migrationTypes);
+			IEnumerable<Type> allMigrations = GetMigrations();
 
 			IGrouping<Version, MigrationBase>[] migrations = allMigrations
 				.Select(Activator.CreateInstance)
@@ -99,6 +103,21 @@ namespace Blastic.Data
 			return migrations
 				.Where(x => x.Key <= targetVersion)
 				.Max(x => x.Key);
+		}
+
+		private IEnumerable<Type> GetMigrations()
+		{
+			Assembly assembly = Assembly.GetAssembly(GetType());
+
+			IEnumerable<Type> genericMigrationTypes = assembly.GetTypes()
+				.Where(x => !x.IsAbstract)
+				.Where(x => x.BaseType == typeof(MigrationBase));
+
+			IEnumerable<Type> migrationTypes = assembly.GetTypes()
+				.Where(x => !x.IsAbstract)
+				.Where(x => x.IsSubclassOf(typeof(T)));
+
+			return genericMigrationTypes.Concat(migrationTypes);
 		}
 	}
 }

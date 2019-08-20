@@ -8,21 +8,32 @@ using System.Threading.Tasks;
 using Blastic.Caliburn;
 using Blastic.Diagnostics;
 using Blastic.Execution;
+using Blastic.Services.Settings;
 
 namespace Blastic.UserInterface.Settings
 {
-	public abstract class SettingsSectionViewModel : ScreenBase, ISettingsSectionViewModel, IDataErrorInfo
+	public abstract class SettingsSectionViewModel : ConductorAllActiveBase<object>, ISettingsSectionViewModel, IDataErrorInfo
 	{
 		private Dictionary<string, SettingInfo> _settings;
 
 		public abstract string SectionName { get; }
+		public ISettingsService SettingsService { get; }
 
-		protected SettingsSectionViewModel(ExecutionContextFactory executionContextFactory) : base(executionContextFactory)
+		public IsExpandedSetting IsExpanded { get; private set; }
+
+		protected SettingsSectionViewModel(
+			ExecutionContextFactory executionContextFactory,
+			ISettingsService settingsService)
+			:
+			base(executionContextFactory)
 		{
+			SettingsService = settingsService;
 		}
 
 		protected override Task OnInitializeAsync(CancellationToken cancellationToken)
 		{
+			IsExpanded = new IsExpandedSetting(SettingsService, SectionName);
+
 			_settings = GetType()
 				.GetProperties()
 				.Where(x => IsAssignableToGenericType(x.PropertyType, typeof(Setting<>)))
@@ -136,6 +147,47 @@ namespace Blastic.UserInterface.Settings
 
 				return methodInfo;
 			}
+		}
+
+		protected void RegisterForUI<T>(Setting<T> setting)
+		{
+			Items.Add(setting);
+		}
+
+		protected void RegisterForUI<T1, T2>(Setting<T1> setting1, Setting<T2> setting2)
+		{
+			RegisterForUI(setting1);
+			RegisterForUI(setting2);
+		}
+
+		protected void RegisterForUI<T1, T2, T3>(
+			Setting<T1> setting1,
+			Setting<T2> setting2,
+			Setting<T3> setting3)
+		{
+			RegisterForUI(setting1, setting2);
+			RegisterForUI(setting3);
+		}
+
+		protected void RegisterForUI<T1, T2, T3, T4>(
+			Setting<T1> setting1,
+			Setting<T2> setting2,
+			Setting<T3> setting3,
+			Setting<T4> setting4)
+		{
+			RegisterForUI(setting1, setting2, setting3);
+			RegisterForUI(setting4);
+		}
+
+		protected void RegisterForUI<T1, T2, T3, T4, T5>(
+			Setting<T1> setting1,
+			Setting<T2> setting2,
+			Setting<T3> setting3,
+			Setting<T4> setting4,
+			Setting<T5> setting5)
+		{
+			RegisterForUI(setting1, setting2, setting3, setting4);
+			RegisterForUI(setting5);
 		}
 	}
 }

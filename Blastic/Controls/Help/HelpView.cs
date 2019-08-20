@@ -15,6 +15,9 @@ namespace Blastic.Controls.Help
 		public object HelpContent { get; set; }
 
 		[DependencyProperty]
+		public object DisableInsteadOfCollapse { get; set; }
+
+		[DependencyProperty]
 		public Thickness HelpIconMargin { get; set; } = new Thickness(8, 0, 0, 0);
 	}
 }

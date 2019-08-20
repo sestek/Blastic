@@ -29,7 +29,12 @@ namespace Blastic.Initialization.Steps
 			FailureMessage = "Cannot read settings. Program might behave incorrectly.";
 		}
 
-		public async Task Initialize(CancellationToken cancellationToken)
+		public Task<bool> ShouldExecute(CancellationToken cancellationToken)
+		{
+			return Task.FromResult(true);
+		}
+
+		public async Task Execute(CancellationToken cancellationToken)
 		{
 			await _settingsViewModel.ReadSettings(cancellationToken);
 		}

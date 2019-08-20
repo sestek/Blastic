@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="Blastic.UserInterface.Settings.FormSettingSectionView"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:controlExtensions="clr-namespace:Blastic.ControlExtensions"
+			 xmlns:controls="clr-namespace:Forge.Forms.Controls;assembly=Forge.Forms"
+			 xmlns:converters="clr-namespace:Blastic.Converters"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:help="clr-namespace:Blastic.Controls.Help"
+			 xmlns:local="clr-namespace:Blastic.UserInterface.Settings"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d"
+			 d:DataContext="{d:DesignInstance local:SettingsSectionViewModel}">
+
+	<UserControl.Resources>
+		<converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter" />
+	</UserControl.Resources>
+
+	<StackPanel>
+		<ItemsControl Margin="0,4,0,0"
+					  ItemsSource="{Binding Items}">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate DataType="local:Setting">
+					<Grid controlExtensions:GridExtensions.RowDefinitions="Auto,Auto">
+						<help:HelpView Grid.Row="0"
+									   DisableInsteadOfCollapse="True"
+									   VerticalContentAlignment="Center"
+									   HelpContent="{Binding Help}">
+							<controls:DynamicForm Model="{Binding}" />
+						</help:HelpView>
+
+						<ItemsControl Grid.Row="1"
+									  Margin="12,0,0,0"
+									  ItemsSource="{Binding DiagnosticMessages}"
+									  Visibility="{Binding DiagnosticMessages.Count, Converter={StaticResource CountToVisibilityConverter}}" />
+					</Grid>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+	</StackPanel>
+</UserControl>

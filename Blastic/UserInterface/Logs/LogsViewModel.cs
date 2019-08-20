@@ -53,7 +53,7 @@ namespace Blastic.UserInterface.Logs
 		{
 			bool? hasErrorLog = e.NewItems?.Cast<Log>().Any(x => x.Level >= LogEventLevel.Error);
 
-			if (hasErrorLog == true && _logSettingsViewModel.OpenWindowOnError.Value)
+			if (hasErrorLog == true && _logSettingsViewModel.OpenWindowOnErrorSetting.Value)
 			{
 				await Show();
 			}

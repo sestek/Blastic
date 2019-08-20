@@ -1,7 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Blastic.Diagnostics;
 using PropertyChanged;
 using Blastic.Services.Settings;
+using Caliburn.Micro;
 using Forge.Forms.Annotations;
 using MaterialDesignThemes.Wpf;
 
@@ -10,7 +12,7 @@ namespace Blastic.UserInterface.Settings
 	/// <summary>
 	/// An individual setting.
 	/// </summary>
-	/// <typeparam name="T">Type of the value. Should be a primitive type.</typeparam>
+	/// <typeparam name="T">Type of the value.</typeparam>
 	[AddINotifyPropertyChangedInterface]
 	[Form(Mode = DefaultFields.None)]
 	public class Setting<T>
@@ -56,12 +58,16 @@ namespace Blastic.UserInterface.Settings
 		/// </summary>
 		public T Value { get; set; }
 
+		public IObservableCollection<DiagnosticMessage> DiagnosticMessages { get; }
+
 		public Setting(
 			ISettingsService settingsService,
 			string key,
 			T defaultValue)
 		{
 			_settingsService = settingsService;
+
+			DiagnosticMessages = new BindableCollection<DiagnosticMessage>();
 
 			Key = key;
 			DefaultValue = defaultValue;
@@ -106,6 +112,17 @@ namespace Blastic.UserInterface.Settings
 		public virtual string CheckError()
 		{
 			return null;
+		}
+
+		public virtual void PopulateDiagnosticMessages()
+		{
+		}
+
+		// Will be called by Fody.
+		private void OnSettingValueChanged()
+		{
+			DiagnosticMessages.Clear();
+			PopulateDiagnosticMessages();
 		}
 	}
 }

@@ -35,7 +35,12 @@ namespace Blastic.Data.Initialization.Steps
 			FailureMessage = "Cannot migrate database. Program might behave incorrectly.";
 		}
 
-		public async Task Initialize(CancellationToken cancellationToken)
+		public async Task<bool> ShouldExecute(CancellationToken cancellationToken)
+		{
+			return await _programDatabase.IsMigrationAvailable(cancellationToken);
+		}
+
+		public async Task Execute(CancellationToken cancellationToken)
 		{
 			_logger.LogDebug("Checking and applying migrations.");
 			await _programDatabase.MigrateAsync(cancellationToken);

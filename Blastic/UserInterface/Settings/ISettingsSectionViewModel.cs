@@ -8,7 +8,8 @@ namespace Blastic.UserInterface.Settings
 	public interface ISettingsSectionViewModel
 	{
 		string SectionName { get; }
-		
+		IsExpandedSetting IsExpanded { get; }
+
 		Task<IEnumerable<DiagnosticMessage>> GetDiagnosticMessages(CancellationToken cancellationToken);
 
 		Task Save(CancellationToken cancellationToken);

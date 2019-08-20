@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Threading;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -35,6 +36,16 @@ namespace Blastic.Initialization
 			_application = new App();
 
 			this.AddDefaults();
+		}
+
+		public BlasticApplication OnUnhandledException(Func<DispatcherUnhandledExceptionEventArgs, Task> func)
+		{
+			_application.DispatcherUnhandledException += async (sender, args) =>
+			{
+				await func(args);
+			};
+
+			return this;
 		}
 
 		public BlasticApplication Configure(Action<ConfigurationBuilder> action)
@@ -95,13 +106,6 @@ namespace Blastic.Initialization
 			try
 			{
 				bootstrapper.Initialize();
-
-				_application.DispatcherUnhandledException += (sender, args) =>
-				{
-					Log.Error(args.Exception, args.Exception.Message);
-					args.Handled = true;
-				};
-
 				_application.Run();
 			}
 			catch (Exception exception)

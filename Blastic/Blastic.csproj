@@ -181,15 +181,18 @@
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserInterface\Login\LoginViewModel.cs" />
+    <Compile Include="UserInterface\Settings\FileBrowserSetting.cs" />
+    <Compile Include="UserInterface\Settings\FormSettingSectionView.xaml.cs">
+      <DependentUpon>FormSettingSectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\Settings\IsExpandedSetting.cs" />
+    <Compile Include="UserInterface\Settings\PasswordSetting.cs" />
     <Compile Include="UserInterface\TabbedMain\IMainTab.cs" />
     <Compile Include="UserInterface\TabbedMain\TabbedMainView.xaml.cs">
       <DependentUpon>TabbedMainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserInterface\TabbedMain\TabbedMainViewModel.cs" />
     <Compile Include="UserInterface\Settings\ISettingsSectionViewModel.cs" />
-    <Compile Include="UserInterface\Logs\Settings\LogSettingsView.xaml.cs">
-      <DependentUpon>LogSettingsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserInterface\Logs\Settings\LogSettingsViewModel.cs" />
     <Compile Include="UserInterface\Logs\Settings\OpenWindowOnErrorSetting.cs" />
     <Compile Include="UserInterface\Settings\Setting.cs" />
@@ -381,11 +384,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserInterface\TabbedMain\TabbedMainView.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="UserInterface\Settings\FormSettingSectionView.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserInterface\Logs\Settings\LogSettingsView.xaml">
+    <Page Include="UserInterface\TabbedMain\TabbedMainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
