@@ -2,5 +2,6 @@
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="/Blastic;component/Themes/HelpView.xaml" />
 		<ResourceDictionary Source="/Blastic;component/Themes/LabeledControl.xaml" />
+		<ResourceDictionary Source="/Blastic;component/Themes/DiagnosticMessage.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

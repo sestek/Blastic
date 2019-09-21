@@ -48,7 +48,7 @@ namespace Blastic.UserInterface.Settings
 		{
 			foreach (SettingInfo info in _settings.Values)
 			{
-				await (Task)info.SaveMethod.Invoke(info.Setting, new object[]{ cancellationToken });
+				await (Task)info.SaveMethod.Invoke(info.Setting, new object[] { cancellationToken });
 			}
 		}
 
@@ -70,7 +70,22 @@ namespace Blastic.UserInterface.Settings
 
 		public virtual Task<IEnumerable<DiagnosticMessage>> GetDiagnosticMessages(CancellationToken cancellationToken)
 		{
-			return Task.FromResult(Enumerable.Empty<DiagnosticMessage>());
+			List<DiagnosticMessage> diagnosticMessages = new List<DiagnosticMessage>();
+
+			foreach (SettingInfo info in _settings.Values)
+			{
+				string errorMessage = (string)info.CheckErrorMethod.Invoke(info.Setting, Array.Empty<object>());
+
+				if (string.IsNullOrEmpty(errorMessage))
+				{
+					continue;
+				}
+
+				DiagnosticMessage diagnosticMessage = new DiagnosticMessage(Severity.Error, errorMessage);
+				diagnosticMessages.Add(diagnosticMessage);
+			}
+
+			return Task.FromResult((IEnumerable<DiagnosticMessage>)diagnosticMessages);
 		}
 
 		public string this[string columnName]
@@ -106,7 +121,7 @@ namespace Blastic.UserInterface.Settings
 			}
 
 			Type baseType = givenType.BaseType;
-			
+
 			if (baseType == null)
 			{
 				return false;

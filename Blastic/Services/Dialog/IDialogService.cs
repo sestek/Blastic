@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Blastic.Services.Dialog.FileFilters;
 
 namespace Blastic.Services.Dialog
 {

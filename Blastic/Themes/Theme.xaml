@@ -2,7 +2,6 @@
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="Button.xaml" />
 		<ResourceDictionary Source="Colors.xaml" />
-		<ResourceDictionary Source="DiagnosticMessage.xaml" />
 		<ResourceDictionary Source="Separator.xaml" />
 		<ResourceDictionary Source="TextBlock.xaml" />
 		<ResourceDictionary Source="TextBox.xaml" />

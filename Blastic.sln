@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blastic.Sample", "Blastic.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blastic", "Blastic\Blastic.csproj", "{2482D54F-3264-4DC1-9DBE-00CC325D39EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blastic.Data", "Blastic.Data\Blastic.Data.csproj", "{A62A9670-6CE5-48FA-AFCB-12D68685E897}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{2482D54F-3264-4DC1-9DBE-00CC325D39EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2482D54F-3264-4DC1-9DBE-00CC325D39EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2482D54F-3264-4DC1-9DBE-00CC325D39EF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A62A9670-6CE5-48FA-AFCB-12D68685E897}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A62A9670-6CE5-48FA-AFCB-12D68685E897}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A62A9670-6CE5-48FA-AFCB-12D68685E897}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A62A9670-6CE5-48FA-AFCB-12D68685E897}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

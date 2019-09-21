@@ -1,10 +1,20 @@
-﻿namespace Blastic
+﻿using System;
+using System.Windows;
+
+namespace Blastic
 {
-	public partial class App
+	public class App : Application
 	{
 		public App()
 		{
-			InitializeComponent();
+			ResourceDictionary applicationResources = new ResourceDictionary
+			{
+				Source = new Uri(
+					"/Blastic;component/Themes/ApplicationResources.xaml",
+					UriKind.RelativeOrAbsolute)
+			};
+
+			Resources.MergedDictionaries.Add(applicationResources);
 		}
 	}
 }
